@@ -3,6 +3,8 @@ MIDIMapperX
 
 The ultimate MIDI Mapping &amp; Translation VST plugin.  For FL Studio and other Windows DAW users.
 
+![Screenshot](http://github.com/LeifBloomquist/MIDIMapperX/blob/master/Screenshots/MidiMapperX_V2.png)
+
 *Please Note* there are a few serious bugs with this embryonic version.  See Issues for details.
 
 Installation
