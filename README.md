@@ -3,7 +3,7 @@ MIDIMapperX
 
 The ultimate MIDI Mapping &amp; Translation VST plugin.  For FL Studio and other Windows DAW users.
 
-*Please Note* there are a few serious bugs with this embyonic version.  See Issues for details.
+*Please Note* there are a few serious bugs with this embryonic version.  See Issues for details.
 
 Installation
 ------------
@@ -14,7 +14,7 @@ http://www.microsoft.com/en-us/download/details.aspx?id=30653
 
 Copy the files in Binaries/ to your VST folder and rescan within your DAW.
 
-Please note that for FL Studio, I had to put the file FL.exe.config in the same folder as FL.exe for it to work.  Still digging into this. 
+Please note that for FL Studio, I had to put the file FL.exe.config (under Support/) in the same folder as FL.exe for it to work.  Still digging into this. 
 
 
 Credits
