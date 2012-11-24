@@ -76,17 +76,13 @@
                         {
                             midiData = MapNoteItem.StringToBytes(item.OutputBytesStringOff, channel, velocity);
                         }
+                        // else midiData remains null, which should never happen
 
                         // If OutputBytes was empty, ignore this event.   Could try sending the event with an empty array (not null) - not sure what would happen.
                         if (midiData == null) continue;
 
-                        VstMidiEvent mappedEvent = new VstMidiEvent(
-                            midiInputEvent.DeltaFrames, 
-                            midiInputEvent.NoteLength, 
-                            midiInputEvent.NoteOffset, 
-                            midiData, 
-                            midiInputEvent.Detune, 
-                            midiInputEvent.NoteOffVelocity);
+                        // Trick: Use VstMidiSysExEvent in place of VstMidiEvent, since this seems to allow arbitary bytes.
+                        VstMidiSysExEvent mappedEvent = new VstMidiSysExEvent(midiInputEvent.DeltaFrames, midiData);
 
                         Events.Add(mappedEvent);
                     }

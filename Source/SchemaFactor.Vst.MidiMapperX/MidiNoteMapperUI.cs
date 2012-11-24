@@ -269,22 +269,6 @@ namespace SchemaFactor.Vst.MidiMapperX
             }
         }
 
-/*        public void ShowMapList()
-        {
-            string s = "";
-            int i=0;
-
-            foreach (MapNoteItem item in _plugin.NoteMap)
-            {
-                i++;
-                s = s + "Entry:" + i + "  KeyName:" +  item.KeyName + "  Notenum:" + item.TriggerNoteNumber + " Bytes:" + item.OutputBytesString + "\n"; 
-            }
-
-            MessageBox.Show(s, "Entries:"+i);
-        }
-*/
-
-
         private void MapListVw_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             // Determine if clicked column is already the column that is being sorted.
@@ -448,5 +432,4 @@ namespace SchemaFactor.Vst.MidiMapperX
             }
         }
     } 
-
 }
