@@ -17,7 +17,7 @@ You need:
 2. Visual Studio 2008 Runtimes      http://www.microsoft.com/en-us/download/details.aspx?id=29
 3. The MidiMapperX files            https://github.com/LeifBloomquist/MIDIMapperX/tree/master/Binaries/32bit
 
-Install .NET 4.5 and the VS2008 runtimed, then copy the files under 32bit/ to your VST folder (i.e.  C:\Program Files (x86)\VstPlugins) and rescan within your DAW.
+Install .NET 4.5 and the VS2008 runtimes, then copy the files under 32bit/ to your VST folder (i.e.  C:\Program Files (x86)\VstPlugins) and rescan within your DAW.
 
 Please note that for FL Studio, I also had to put the file FL.exe.config (under Support/) in the same folder as FL.exe for it to work.  May be optional.
 
