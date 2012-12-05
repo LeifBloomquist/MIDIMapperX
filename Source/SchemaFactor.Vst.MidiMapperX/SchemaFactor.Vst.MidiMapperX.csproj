@@ -117,11 +117,13 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Jacobi.Vst.Core">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\VstPlugins\MidiMapperX\Jacobi.Vst.Core.dll</HintPath>
+    <Reference Include="Jacobi.Vst.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\VstPlugins\MidiMapperX\Jacobi.Vst.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Jacobi.Vst.Framework">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\VstPlugins\MidiMapperX\Jacobi.Vst.Framework.dll</HintPath>
+    <Reference Include="Jacobi.Vst.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\VstPlugins\MidiMapperX\Jacobi.Vst.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -129,9 +131,6 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfo.Version.cs">
-      <Link>Properties\AssemblyInfo.Version.cs</Link>
-    </Compile>
     <Compile Include="AudioProcessor.cs" />
     <Compile Include="MapNoteDetailsUI.cs">
       <SubType>Form</SubType>

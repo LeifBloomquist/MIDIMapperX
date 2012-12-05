@@ -26,10 +26,10 @@
         /// Constructs a new instance.
         /// </summary>
         public Plugin()
-            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2012 / Jacobi Software 2012", 1002),
+            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2012 / Jacobi Software 2012", 1003),
                 VstPluginCategory.Synth, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
         {
-            NoteMap = new MapNoteItemList();
+            NoteMap = new MapNoteItemList();         
         }
 
         /// <summary>

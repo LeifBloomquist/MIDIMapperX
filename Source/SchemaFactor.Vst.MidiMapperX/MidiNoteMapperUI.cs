@@ -25,10 +25,12 @@ namespace SchemaFactor.Vst.MidiMapperX
         private long _idleCount = 0;
         private bool _showDebug = false;
 
+        private bool _resizeInProgress = false;   // See comments in SizeLastColumn() below for why this is needed.
+
         private ListViewItemComparer _lvwItemComparer = new ListViewItemComparer();
 
         public void setPlugin(Plugin plugin)
-        {     
+        {
             _plugin = plugin;
             FillList();
         }
@@ -243,12 +245,17 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void SizeLastColumn(ListView lv)
         {
-            lv.Columns[lv.Columns.Count - 1].Width = -2;
+            _resizeInProgress = true;
+            lv.Columns[lv.Columns.Count - 1].Width = -2;  // !!! On some machines, but not others, this fires the ColumnWidthChanged event below, leading to a stack overflow exception!
+            _resizeInProgress = false;
         }
 
         private void MapListVw_ColumnWidthChanged(object sender, ColumnWidthChangedEventArgs e)
-        {          
-            SizeLastColumn((ListView)sender);
+        {
+            if (!_resizeInProgress)
+            {
+                SizeLastColumn((ListView)sender);
+            }
         }
 
         // "About" Button

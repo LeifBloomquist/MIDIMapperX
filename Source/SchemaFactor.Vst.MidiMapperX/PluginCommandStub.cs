@@ -16,7 +16,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         /// </summary>
         /// <returns>Never returns null.</returns>
         protected override IVstPlugin CreatePluginInstance()
-        {
+        {           
             return p;
         }
 

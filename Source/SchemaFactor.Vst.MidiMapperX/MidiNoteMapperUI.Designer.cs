@@ -55,7 +55,7 @@
             this.MapListVw.FullRowSelect = true;
             this.MapListVw.GridLines = true;
             this.MapListVw.HideSelection = false;
-            this.MapListVw.Location = new System.Drawing.Point(4, 4);
+            this.MapListVw.Location = new System.Drawing.Point(5, 6);
             this.MapListVw.MultiSelect = false;
             this.MapListVw.Name = "MapListVw";
             this.MapListVw.Size = new System.Drawing.Size(870, 176);
@@ -139,7 +139,7 @@
             // 
             this.AboutBtn.BackColor = System.Drawing.Color.Red;
             this.AboutBtn.Font = new System.Drawing.Font("OCR A Extended", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AboutBtn.Location = new System.Drawing.Point(788, 188);
+            this.AboutBtn.Location = new System.Drawing.Point(791, 188);
             this.AboutBtn.Name = "AboutBtn";
             this.AboutBtn.Size = new System.Drawing.Size(85, 23);
             this.AboutBtn.TabIndex = 5;
