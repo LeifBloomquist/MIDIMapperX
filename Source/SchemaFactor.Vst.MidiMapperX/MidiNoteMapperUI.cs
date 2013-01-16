@@ -12,7 +12,7 @@ namespace SchemaFactor.Vst.MidiMapperX
     /// The plugin custom editor UI.
     /// </summary>
     partial class MidiNoteMapperUI : UserControl
-    {
+    { 
         private Plugin _plugin;
         private long _idleCount = 0;
         private bool _showDebug = false;
@@ -64,7 +64,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                                   "Calls:  " + _plugin.callCount + "\n" +
                                   "Events: " + _plugin.eventCount + "\n" +
                                   "MIDI:   " + _plugin.midiCount + "\n" +
-                                  "Hits:   " + _plugin.hitCount + "\n" +
+                                  "Hits:   " + _plugin.hitCount + "\n" +                     
                                   "Last Output: [" + MapNoteItem.lastOutputString +"]";
             }
         }
@@ -85,7 +85,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 lvItem.Name = item.TriggerNoteNumber.ToString();   // This isn't displayed anywhere, but handy to store the Note#  (used below by Add/Edit)
 
                 MapListVw.Items.Add(lvItem);
-            }
+            } 
         }
 
         // "Add" Button
@@ -232,7 +232,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             MessageBox.Show( _plugin.ProductInfo.Vendor + "\n\n" + 
                              _plugin.ProductInfo.Product + "\n\n" +                            
-                             "Version: " + _plugin.ProductInfo.FormattedVersion +"BETA BETA BETA!",
+                             "Version: " + _plugin.ProductInfo.FormattedVersion +"BETA 2!",
                              "Schema Factor MIDIMapperX");
         }
 
@@ -260,22 +260,21 @@ namespace SchemaFactor.Vst.MidiMapperX
             myTimer.Start();
         }
 
-        // This is the method to run when the timer is raised. 
+        // This is the method to run when the timer is raised.
+        // Animates the background of the Listview items.
+        // Note that to avoid flicker, we use a derived BufferdLsitview, and FL users must use Bridged mode.
         private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
-            // Animate the backgrounds
-            //MapListVw.BeginUpdate();   // Actually makes the flicker worse!            
             foreach (ListViewItem item in MapListVw.Items)
             {
                 byte noteNo = Byte.Parse(item.Name);
 
-                int green = (int)(_plugin.NoteMap[noteNo].TriggerPulseOn * 255);
-                int red = (int)(_plugin.NoteMap[noteNo].TriggerPulseOff * 255);
-         
-                 item.BackColor = Color.FromArgb(red, green, 0);                
+                int green = (int)(_plugin.NoteMap[noteNo].TriggerPulseOn  * 255);
+                int red   = (int)(_plugin.NoteMap[noteNo].TriggerPulseOff * 255);
+
+                item.SubItems[0].BackColor = Color.FromArgb(red, green, 0);
                 _plugin.NoteMap[noteNo].Pulse();
             }
-            //MapListVw.EndUpdate();            
         }
 
         private void MapListVw_Resize(object sender, System.EventArgs e)
@@ -284,7 +283,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         }
 
         private void SizeLastColumn(ListView lv)
-        { 
+        {  
             _resizeInProgress = true;
             lv.Columns[lv.Columns.Count - 1].Width = -2;  // !!! On some machines, but not others, this fires the ColumnWidthChanged event below, leading to a stack overflow exception!
             _resizeInProgress = false;

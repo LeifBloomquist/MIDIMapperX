@@ -47,9 +47,9 @@
         } 
   
         public void Pulse()
-        {
-            TriggerPulseOff *= 0.8;
-            TriggerPulseOn  *= 0.7;
+        {           
+            TriggerPulseOn  *= 0.9;
+            TriggerPulseOff *= 0.6;
         }   
 
         /// <summary>
@@ -62,6 +62,8 @@
         /// </summary>
         public static byte[] StringToBytes(string OutputBytesString, byte channel, byte velocity)
         {
+            lastOutputString = "";
+
             // Null string case - Return null
             if (OutputBytesString == null) return null;
 

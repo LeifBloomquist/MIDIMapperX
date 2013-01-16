@@ -4,6 +4,7 @@
     using Jacobi.Vst.Framework;
     using Jacobi.Vst.Framework.Common;
     using Jacobi.Vst.Framework.Plugin;
+    using System;
 
     /// <summary>
     /// The Plugin root class that implements the interface manager and the plugin midi source.

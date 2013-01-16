@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2012 for Windows Desktop
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchemaFactor.Vst.MidiMapperX", "SchemaFactor.Vst.MidiMapperX.csproj", "{9EA73A6E-92BF-4D4C-A5A0-34950230F48E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlickerTestApp", "..\FlickerTestApp\FlickerTestApp.csproj", "{3C080864-18F6-4983-AA68-8E605A6A062E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,18 +32,6 @@ Global
 		{9EA73A6E-92BF-4D4C-A5A0-34950230F48E}.Release|x64.Build.0 = Release|x64
 		{9EA73A6E-92BF-4D4C-A5A0-34950230F48E}.Release|x86.ActiveCfg = Release|x86
 		{9EA73A6E-92BF-4D4C-A5A0-34950230F48E}.Release|x86.Build.0 = Release|x86
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Release|x64.ActiveCfg = Release|Any CPU
-		{3C080864-18F6-4983-AA68-8E605A6A062E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
