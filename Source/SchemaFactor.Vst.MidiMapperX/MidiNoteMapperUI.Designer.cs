@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MidiNoteMapperUI));
-            this.MapListVw = new System.Windows.Forms.ListView();
+            this.MapListVw = new BufferedListView(); //System.Windows.Forms.ListView();
             this.KeyName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.TriggerNoteNo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SendingMIDIBytesOn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -39,7 +39,7 @@
             this.DeleteBtn = new System.Windows.Forms.Button();
             this.DebugLabel = new System.Windows.Forms.Label();
             this.AboutBtn = new System.Windows.Forms.Button();
-            this.ThruCheckbox = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MapListVw
@@ -58,7 +58,7 @@
             this.MapListVw.Location = new System.Drawing.Point(5, 6);
             this.MapListVw.MultiSelect = false;
             this.MapListVw.Name = "MapListVw";
-            this.MapListVw.Size = new System.Drawing.Size(870, 176);
+            this.MapListVw.Size = new System.Drawing.Size(870, 431);
             this.MapListVw.TabIndex = 0;
             this.MapListVw.UseCompatibleStateImageBehavior = false;
             this.MapListVw.View = System.Windows.Forms.View.Details;
@@ -90,7 +90,7 @@
             // 
             this.AddBtn.BackColor = System.Drawing.Color.Red;
             this.AddBtn.Font = new System.Drawing.Font("OCR A Extended", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddBtn.Location = new System.Drawing.Point(3, 187);
+            this.AddBtn.Location = new System.Drawing.Point(4, 440);
             this.AddBtn.Name = "AddBtn";
             this.AddBtn.Size = new System.Drawing.Size(85, 23);
             this.AddBtn.TabIndex = 1;
@@ -102,7 +102,7 @@
             // 
             this.EditBtn.BackColor = System.Drawing.Color.Red;
             this.EditBtn.Font = new System.Drawing.Font("OCR A Extended", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EditBtn.Location = new System.Drawing.Point(93, 187);
+            this.EditBtn.Location = new System.Drawing.Point(94, 440);
             this.EditBtn.Name = "EditBtn";
             this.EditBtn.Size = new System.Drawing.Size(85, 23);
             this.EditBtn.TabIndex = 2;
@@ -114,7 +114,7 @@
             // 
             this.DeleteBtn.BackColor = System.Drawing.Color.Red;
             this.DeleteBtn.Font = new System.Drawing.Font("OCR A Extended", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DeleteBtn.Location = new System.Drawing.Point(183, 187);
+            this.DeleteBtn.Location = new System.Drawing.Point(184, 440);
             this.DeleteBtn.Name = "DeleteBtn";
             this.DeleteBtn.Size = new System.Drawing.Size(85, 23);
             this.DeleteBtn.TabIndex = 3;
@@ -128,7 +128,7 @@
             this.DebugLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.DebugLabel.Font = new System.Drawing.Font("OCR A Extended", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DebugLabel.ForeColor = System.Drawing.Color.Black;
-            this.DebugLabel.Location = new System.Drawing.Point(314, 35);
+            this.DebugLabel.Location = new System.Drawing.Point(237, 156);
             this.DebugLabel.Name = "DebugLabel";
             this.DebugLabel.Size = new System.Drawing.Size(425, 136);
             this.DebugLabel.TabIndex = 4;
@@ -139,7 +139,7 @@
             // 
             this.AboutBtn.BackColor = System.Drawing.Color.Red;
             this.AboutBtn.Font = new System.Drawing.Font("OCR A Extended", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AboutBtn.Location = new System.Drawing.Point(791, 188);
+            this.AboutBtn.Location = new System.Drawing.Point(792, 441);
             this.AboutBtn.Name = "AboutBtn";
             this.AboutBtn.Size = new System.Drawing.Size(85, 23);
             this.AboutBtn.TabIndex = 5;
@@ -147,19 +147,17 @@
             this.AboutBtn.UseVisualStyleBackColor = false;
             this.AboutBtn.Click += new System.EventHandler(this.AboutBtn_Click);
             // 
-            // ThruCheckbox
+            // button1
             // 
-            this.ThruCheckbox.AutoSize = true;
-            this.ThruCheckbox.BackColor = System.Drawing.Color.Transparent;
-            this.ThruCheckbox.Font = new System.Drawing.Font("OCR A Extended", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ThruCheckbox.ForeColor = System.Drawing.Color.White;
-            this.ThruCheckbox.Location = new System.Drawing.Point(274, 191);
-            this.ThruCheckbox.Name = "ThruCheckbox";
-            this.ThruCheckbox.Size = new System.Drawing.Size(87, 16);
-            this.ThruCheckbox.TabIndex = 6;
-            this.ThruCheckbox.Text = "MIDI Thru";
-            this.ThruCheckbox.UseVisualStyleBackColor = false;
-            this.ThruCheckbox.CheckedChanged += new System.EventHandler(this.ThruCheckbox_CheckedChanged);
+            this.button1.BackColor = System.Drawing.Color.Red;
+            this.button1.Font = new System.Drawing.Font("OCR A Extended", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(703, 441);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(85, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Options...";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.OptionsBtn_Click);
             // 
             // MidiNoteMapperUI
             // 
@@ -167,8 +165,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.Controls.Add(this.ThruCheckbox);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.AboutBtn);
             this.Controls.Add(this.DebugLabel);
             this.Controls.Add(this.DeleteBtn);
@@ -176,17 +173,17 @@
             this.Controls.Add(this.AddBtn);
             this.Controls.Add(this.MapListVw);
             this.Name = "MidiNoteMapperUI";
-            this.Size = new System.Drawing.Size(880, 215);
+            this.Size = new System.Drawing.Size(880, 467);
             this.Load += new System.EventHandler(this.MidiNoteMapperUI_Load);
             this.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MidiNoteMapperUI_MouseDoubleClick);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView MapListVw;
+        //private System.Windows.Forms.ListView MapListVw;
+        private BufferedListView MapListVw;
         private System.Windows.Forms.ColumnHeader TriggerNoteNo;
         private System.Windows.Forms.ColumnHeader KeyName;
         private System.Windows.Forms.ColumnHeader SendingMIDIBytesOn;
@@ -195,8 +192,8 @@
         private System.Windows.Forms.Button DeleteBtn;
         private System.Windows.Forms.Label DebugLabel;
         private System.Windows.Forms.Button AboutBtn;
-        private System.Windows.Forms.CheckBox ThruCheckbox;
         private System.Windows.Forms.ColumnHeader SendingMIDIBytesOff;
+        private System.Windows.Forms.Button button1;
 
     }
 }

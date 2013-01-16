@@ -25,6 +25,34 @@
         public string OutputBytesStringOff { get; set; }
 
         /// <summary>
+        /// Gets the value for the "pulse" effect, 1.0 to 0.0 ON
+        /// </summary>
+        public double TriggerPulseOn { get; set; }
+
+        /// <summary>
+        /// Gets the value for the "pulse" effect, 1.0 to 0.0 OFF
+        /// </summary>
+        public double TriggerPulseOff { get; private set; }
+
+        public void TriggeredOn()
+        {
+            TriggerPulseOn  = 1.0;
+            TriggerPulseOff = 0.0;
+        }
+
+        public void TriggeredOff()
+        {
+            TriggerPulseOff = 1.0;
+            TriggerPulseOn  = 0.0;
+        } 
+  
+        public void Pulse()
+        {
+            TriggerPulseOff *= 0.8;
+            TriggerPulseOn  *= 0.7;
+        }   
+
+        /// <summary>
         /// Stores the result of the last conversion, for debugging.
         /// </summary>
         public static string lastOutputString { get; private set; }
@@ -53,8 +81,7 @@
             OutputBytesString = OutputBytesString.Replace( "VV", System.BitConverter.ToString(temp, 1, 1) );
 
             // Store result for debugging
-            lastOutputString = OutputBytesString;
-            //MessageBox.Show("lastOutputString: " + lastOutputString);
+            lastOutputString = OutputBytesString;            
 
             // Update byte representation
             string[] array_hex = OutputBytesString.Split(' ');
@@ -75,8 +102,8 @@
     class MapNoteItemList : KeyedCollection<byte, MapNoteItem>
     {
         // This parameterless constructor calls the base class constructor 
-        // that specifies a dictionary threshold of -1 to disable creation of the dictionary.  (Debugging only)
-        //public MapNoteItemList() : base(null, -1) { } 
+        // that specifies a dictionary threshold of -1 to disable creation of the dictionary.
+        public MapNoteItemList() : base(null, -1) { } 
 
         /// <summary>
         /// Returns <see cref="MapNoteItem.TriggerNoteNumber"/>.

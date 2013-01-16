@@ -18,18 +18,19 @@
         public bool presetsLoaded = false;  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.
 
         /// <summary>
-        /// Gets or sets a value indicating wether non-mapped midi inputEvents should be passed to the output.
+        /// Gets or sets the options set.
         /// </summary>
-        public bool midiThru { get; set; }
+        public OptionSet Options { get; set; }
 
         /// <summary>
         /// Constructs a new instance.
         /// </summary>
         public Plugin()
-            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2012 / Jacobi Software 2012", 1003),
+            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2013 / Jacobi Software 2012", 1004),
                 VstPluginCategory.Synth, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
         {
-            NoteMap = new MapNoteItemList();         
+            NoteMap = new MapNoteItemList();
+            Options = new OptionSet();   
         }
 
         /// <summary>

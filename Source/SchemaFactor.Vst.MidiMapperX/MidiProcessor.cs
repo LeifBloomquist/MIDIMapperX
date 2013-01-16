@@ -53,14 +53,21 @@
                 VstMidiEvent midiInputEvent = (VstMidiEvent)evnt;
 
                 // Filter out everything except Note On/Note Off events
-                byte midiCommand = (byte)(midiInputEvent.Data[0] & 0xF0);                
+                byte midiCommand = (byte)(midiInputEvent.Data[0] & 0xF0);  
+              
                 if ((midiCommand == 0x90) || (midiCommand == 0x80))
-                {
+                {                          
                     byte triggerNoteNum = midiInputEvent.Data[1];                  
 
                     if (_plugin.NoteMap.Contains(triggerNoteNum))
                     {
                         _plugin.hitCount++;
+
+                        // If set in options, keep the original event
+                        if (_plugin.Options.MidiThruAll)
+                        {
+                            Events.Add(evnt);
+                        }
 
                         byte channel = (byte)(midiInputEvent.Data[0] & 0x0F);    
                         byte velocity = midiInputEvent.Data[2];
@@ -71,22 +78,24 @@
                         if (midiCommand == 0x90)
                         {
                             midiData = MapNoteItem.StringToBytes(item.OutputBytesStringOn, channel, velocity);
+                            item.TriggeredOn();
                         }
                         else if (midiCommand == 0x80)
                         {
                             midiData = MapNoteItem.StringToBytes(item.OutputBytesStringOff, channel, velocity);
+                            item.TriggeredOff();
                         }
                         // else midiData remains null, which should never happen
 
-                        // If OutputBytes was empty, ignore this event.   Could try sending the event with an empty array (not null) - not sure what would happen.
+                        // If OutputBytes was empty, ignore this event.
                         if (midiData == null) continue;
-
-                        // Trick: Use VstMidiSysExEvent in place of VstMidiEvent, since this seems to allow arbitary bytes.
+                        
+                        // Trick: Use VstMidiSysExEvent in place of VstMidiEvent, since this seems to allow arbitary bytes.                        
                         VstMidiSysExEvent mappedEvent = new VstMidiSysExEvent(midiInputEvent.DeltaFrames, midiData);
 
                         Events.Add(mappedEvent);
                     }
-                    else if (_plugin.midiThru)
+                    else if (_plugin.Options.MidiThru)
                     {
                         // add original event
                         Events.Add(evnt);

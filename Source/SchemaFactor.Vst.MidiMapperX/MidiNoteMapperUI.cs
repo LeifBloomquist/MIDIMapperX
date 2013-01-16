@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace SchemaFactor.Vst.MidiMapperX
@@ -11,6 +13,17 @@ namespace SchemaFactor.Vst.MidiMapperX
     /// </summary>
     partial class MidiNoteMapperUI : UserControl
     {
+        private Plugin _plugin;
+        private long _idleCount = 0;
+        private bool _showDebug = false;
+
+        private bool _resizeInProgress = false;   // See comments in SizeLastColumn() below for why this is needed.
+
+        private ListViewItemComparer _lvwItemComparer = new ListViewItemComparer();
+        static System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
+
+        private byte lastNoteNumber = 59; 
+
         /// <summary>
         /// Constructs a new instance.  Must be parameterless to avoid error CS0310.
         /// </summary>
@@ -20,14 +33,6 @@ namespace SchemaFactor.Vst.MidiMapperX
             SizeLastColumn(MapListVw);
             FillList();
         }
-
-        private Plugin _plugin;
-        private long _idleCount = 0;
-        private bool _showDebug = false;
-
-        private bool _resizeInProgress = false;   // See comments in SizeLastColumn() below for why this is needed.
-
-        private ListViewItemComparer _lvwItemComparer = new ListViewItemComparer();
 
         public void setPlugin(Plugin plugin)
         {
@@ -42,14 +47,17 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             _idleCount++;
 
+            if (_plugin == null) return;
+
+            // Act on the presets loaded flag.
             if (_plugin.presetsLoaded == true)
             {
                 FillList();
                 _plugin.presetsLoaded = false;
             }
 
-
-            if ((_plugin != null) && (DebugLabel.Visible))
+            // Debug info.
+            if (DebugLabel.Visible)
             {
                 DebugLabel.Text = "Keys:   " + _plugin.NoteMap.Count + "\n" +
                                   "Idle:   " + _idleCount + "\n" +
@@ -61,20 +69,9 @@ namespace SchemaFactor.Vst.MidiMapperX
             }
         }
 
-        private void SelectNoteMapItem(byte noteNo)
-        {
-            MapListVw.SelectedIndices.Clear();
-
-            if (MapListVw.Items.ContainsKey(noteNo.ToString()))
-            {
-                MapListVw.Items[noteNo.ToString()].Selected = true;                
-            }
-        }
-
         private void FillList()
         {
             if (_plugin == null) return;
-
             if ( (!this.Created) || (_plugin.NoteMap == null) ) return;
 
             MapListVw.Items.Clear();
@@ -85,13 +82,10 @@ namespace SchemaFactor.Vst.MidiMapperX
                 lvItem.SubItems.Add(item.TriggerNoteNumber.ToString());
                 lvItem.SubItems.Add(item.OutputBytesStringOn);
                 lvItem.SubItems.Add(item.OutputBytesStringOff);
-                lvItem.Name = item.TriggerNoteNumber.ToString();  // This isn't displayed anywhere, but handy to store the Note#  (used below by Add/Edit)
+                lvItem.Name = item.TriggerNoteNumber.ToString();   // This isn't displayed anywhere, but handy to store the Note#  (used below by Add/Edit)
 
                 MapListVw.Items.Add(lvItem);
             }
-
-            // Do this here because it is done anywhere the GUI is updated, and we know that plugin is set and persistence has loaded. 
-            ThruCheckbox.Checked = _plugin.midiThru;
         }
 
         // "Add" Button
@@ -100,7 +94,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             MapNoteItem newMapNoteItem = new MapNoteItem()
             {
                 KeyName = "New Note Map",
-                TriggerNoteNumber = 60,  // C4
+                TriggerNoteNumber = (byte)(lastNoteNumber+1),
                 OutputBytesStringOn = "",
                 OutputBytesStringOff = ""
             };
@@ -132,7 +126,8 @@ namespace SchemaFactor.Vst.MidiMapperX
                     } // if
 
                     // Add new entry
-                    _plugin.NoteMap.Add(dlg.TempMapNoteItem);                               
+                    _plugin.NoteMap.Add(dlg.TempMapNoteItem);
+                    lastNoteNumber = dlg.TempMapNoteItem.TriggerNoteNumber;         
                     complete = true;   // Successfully added
                 }
                 else
@@ -232,19 +227,64 @@ namespace SchemaFactor.Vst.MidiMapperX
             }
         }
 
+        // "About" Button
+        private void AboutBtn_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show( _plugin.ProductInfo.Vendor + "\n\n" + 
+                             _plugin.ProductInfo.Product + "\n\n" +                            
+                             "Version: " + _plugin.ProductInfo.FormattedVersion +"BETA BETA BETA!",
+                             "Schema Factor MIDIMapperX");
+        }
+
+        // "Options" Button
+        private void OptionsBtn_Click(object sender, EventArgs e)
+        {
+            OptionsUI dlg = new OptionsUI(_plugin.Options );
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                _plugin.Options = dlg.TempOptionSet;
+            }
+        }
+
+ 
         private void MidiNoteMapperUI_Load(object sender, EventArgs e)
         {
-            this.MapListVw.ListViewItemSorter = _lvwItemComparer;            
+            MapListVw.ListViewItemSorter = _lvwItemComparer;  
             FillList();
+
+            myTimer.Tick += new EventHandler(TimerEventProcessor);
+
+            // Sets the timer interval to 50 milliseconds.
+            myTimer.Interval = 50;
+            myTimer.Start();
+        }
+
+        // This is the method to run when the timer is raised. 
+        private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        {
+            // Animate the backgrounds
+            //MapListVw.BeginUpdate();   // Actually makes the flicker worse!            
+            foreach (ListViewItem item in MapListVw.Items)
+            {
+                byte noteNo = Byte.Parse(item.Name);
+
+                int green = (int)(_plugin.NoteMap[noteNo].TriggerPulseOn * 255);
+                int red = (int)(_plugin.NoteMap[noteNo].TriggerPulseOff * 255);
+         
+                 item.BackColor = Color.FromArgb(red, green, 0);                
+                _plugin.NoteMap[noteNo].Pulse();
+            }
+            //MapListVw.EndUpdate();            
         }
 
         private void MapListVw_Resize(object sender, System.EventArgs e)
-        {           
+        {
             SizeLastColumn((ListView)sender);
         }
 
         private void SizeLastColumn(ListView lv)
-        {
+        { 
             _resizeInProgress = true;
             lv.Columns[lv.Columns.Count - 1].Width = -2;  // !!! On some machines, but not others, this fires the ColumnWidthChanged event below, leading to a stack overflow exception!
             _resizeInProgress = false;
@@ -258,14 +298,6 @@ namespace SchemaFactor.Vst.MidiMapperX
             }
         }
 
-        // "About" Button
-        private void AboutBtn_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show( _plugin.ProductInfo.Vendor + "\n\n" + 
-                             _plugin.ProductInfo.Product + "\n\n" +                            
-                             "Version: " + _plugin.ProductInfo.FormattedVersion,
-                             "Schema Factor MIDIMapperX");
-        }
 
         private void MidiNoteMapperUI_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -300,12 +332,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             // Perform the sort with these new sort options.
             MapListVw.Sort();
-        }
-
-        private void ThruCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            _plugin.midiThru = ThruCheckbox.Checked;
-        }
+        }  
     }
 
     /// <summary>
@@ -437,6 +464,6 @@ namespace SchemaFactor.Vst.MidiMapperX
             {
                 return OrderOfSort;
             }
-        }
-    } 
+        }  
+    }
 }

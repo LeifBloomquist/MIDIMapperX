@@ -6,6 +6,7 @@
 
     using Jacobi.Vst.Core;
     using Jacobi.Vst.Framework;
+    using System.Windows.Forms;
 
     class PluginPersistence : IVstPluginPersistence
     {
@@ -43,7 +44,17 @@
                 _plugin.NoteMap.Add(item);
             }
 
-            _plugin.midiThru = reader.ReadBoolean();
+            try  // In case the preset was written with an older version that didn't have all these options yet.
+            {
+                _plugin.Options.MidiThru = reader.ReadBoolean();
+                _plugin.Options.MidiThruAll = reader.ReadBoolean();
+                _plugin.Options.AlwaysSysEx = reader.ReadBoolean();                             
+            }
+            catch // all, i.e. (System.IO.EndOfStreamException e)
+            {
+                // Note: This catch block never seems to be reached, investigate (Low priority)
+                MessageBox.Show("This map was created with an older version of the plugin.\n\nPlease check your options.");
+            }            
 
             _plugin.presetsLoaded = true;
         }
@@ -62,9 +73,11 @@
                 writer.Write(item.OutputBytesStringOff);
             }
 
-            writer.Write(_plugin.midiThru);
+            writer.Write(_plugin.Options.MidiThru);
+            writer.Write(_plugin.Options.MidiThruAll);
+            writer.Write(_plugin.Options.AlwaysSysEx);
 
-            writer.Close();  // LB - this wasn't in the original sample code, not sure if needed or not
+            writer.Close();
         }
 
         #endregion

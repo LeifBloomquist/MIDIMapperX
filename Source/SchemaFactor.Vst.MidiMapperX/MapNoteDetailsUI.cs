@@ -9,6 +9,11 @@ namespace SchemaFactor.Vst.MidiMapperX
     partial class MapNoteDetailsUI : Form
     {
         /// <summary>
+        /// Gets or sets the temporary note map item that is being edited in the form.
+        /// </summary>
+        public MapNoteItem TempMapNoteItem { get; private set; }
+
+        /// <summary>
         /// Constructs a new instance.
         /// </summary>
         public MapNoteDetailsUI(MapNoteItem myMapNoteitem)
@@ -17,17 +22,17 @@ namespace SchemaFactor.Vst.MidiMapperX
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Gets or sets the temporary note map item that is being edited in the form.
-        /// </summary>
-        public MapNoteItem TempMapNoteItem { get; private set; }
-
         private void EntityToForm()
         {
-            this.KeyNameTxt.Text = TempMapNoteItem.KeyName;
-            this.TriggerNoteNoTxt.Value = TempMapNoteItem.TriggerNoteNumber;
-            this.MIDIBytesOnTxt.Text = TempMapNoteItem.OutputBytesStringOn;
-            this.MIDIBytesOffTxt.Text = TempMapNoteItem.OutputBytesStringOff;
+            try
+            {
+                this.KeyNameTxt.Text = TempMapNoteItem.KeyName;
+                this.TriggerNoteNoTxt.Value = TempMapNoteItem.TriggerNoteNumber;
+                this.MIDIBytesOnTxt.Text = TempMapNoteItem.OutputBytesStringOn;
+                this.MIDIBytesOffTxt.Text = TempMapNoteItem.OutputBytesStringOff;
+            }
+            catch    // Silently ignore conversion errors
+            { }
         }
 
         private void FormToEntity()
