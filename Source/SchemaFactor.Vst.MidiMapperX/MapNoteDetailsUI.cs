@@ -58,7 +58,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             FormToEntity();   // Assume other validations have passed before reaching here
         }
 
-        // This is called for keypressesd on both TextBoxes
+        // This is called for keypresses on both TextBoxes
         private void MIDIBytesTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             ((TextBox)sender).BackColor = System.Drawing.SystemColors.Window;
@@ -73,6 +73,10 @@ namespace SchemaFactor.Vst.MidiMapperX
    
         private void MapNoteDetailsUI_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // Get rid of extra whitespace
+            MIDIBytesOnTxt.Text  = MIDIBytesOnTxt.Text.Trim();
+            MIDIBytesOffTxt.Text = MIDIBytesOffTxt.Text.Trim();
+
             if (this.DialogResult == DialogResult.OK)
             {
                 FormToEntity();
