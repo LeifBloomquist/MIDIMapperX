@@ -232,7 +232,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             MessageBox.Show( _plugin.ProductInfo.Vendor + "\n\n" + 
                              _plugin.ProductInfo.Product + "\n\n" +                            
-                             "Version: " + _plugin.ProductInfo.FormattedVersion +"BETA 2!",
+                             "Version: " + _plugin.ProductInfo.FormattedVersion +" ",
                              "Schema Factor MIDIMapperX");
         }
 

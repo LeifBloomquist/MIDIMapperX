@@ -92,6 +92,8 @@
             // 
             this.SysExCheckbox.AutoSize = true;
             this.SysExCheckbox.BackColor = System.Drawing.Color.Transparent;
+            this.SysExCheckbox.Checked = true;
+            this.SysExCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SysExCheckbox.Enabled = false;
             this.SysExCheckbox.Font = new System.Drawing.Font("OCR A Extended", 11.25F);
             this.SysExCheckbox.ForeColor = System.Drawing.Color.White;
