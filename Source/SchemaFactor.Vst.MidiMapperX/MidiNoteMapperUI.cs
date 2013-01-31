@@ -11,7 +11,7 @@ namespace SchemaFactor.Vst.MidiMapperX
     /// <summary>
     /// The plugin custom editor UI.
     /// </summary>
-    partial class MidiNoteMapperUI : UserControl
+    partial class MidiNoteMapperUI : DoubleBufferedUserControl
     { 
         private Plugin _plugin;
         private long _idleCount = 0;
@@ -141,6 +141,12 @@ namespace SchemaFactor.Vst.MidiMapperX
         // "Edit" Button
         private void EditBtn_Click(object sender, EventArgs e)
         {
+            EditSelectedMapping();
+        }
+
+        // Helper Function called by Edit button or double-click       
+        private void EditSelectedMapping()
+        {
             // Exit if nothing selected
             if (MapListVw.SelectedItems.Count == 0) return;
 
@@ -232,7 +238,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             MessageBox.Show( _plugin.ProductInfo.Vendor + "\n\n" + 
                              _plugin.ProductInfo.Product + "\n\n" +                            
-                             "Version: " + _plugin.ProductInfo.FormattedVersion +" ",
+                             "Version: " + _plugin.ProductInfo.FormattedVersion +" BETA 1",
                              "Schema Factor MIDIMapperX");
         }
 
@@ -331,6 +337,14 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             // Perform the sort with these new sort options.
             MapListVw.Sort();
+        }
+
+        private void MapListVw_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (MapListVw.SelectedItems.Count > 0)
+            {
+                EditSelectedMapping();
+            }
         }  
     }
 

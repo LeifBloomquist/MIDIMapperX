@@ -135,6 +135,9 @@
     <Compile Include="BufferedListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DoubleBufferedUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="OptionSet.cs" />
     <Compile Include="OptionsUI.cs">
       <SubType>Form</SubType>

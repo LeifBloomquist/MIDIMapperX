@@ -137,6 +137,7 @@
             this.MapListVw.View = System.Windows.Forms.View.Details;
             this.MapListVw.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.MapListVw_ColumnClick);
             this.MapListVw.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.MapListVw_ColumnWidthChanged);
+            this.MapListVw.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.MapListVw_MouseDoubleClick);
             this.MapListVw.Resize += new System.EventHandler(this.MapListVw_Resize);
             // 
             // KeyName

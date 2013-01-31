@@ -10,6 +10,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         public BufferedListView()
         {
             this.DoubleBuffered = true;
+            this.UpdateStyles();
         } 
     }
 }
