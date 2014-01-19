@@ -32,6 +32,7 @@
             this.OptionsButton = new System.Windows.Forms.Button();
             this.NotePanel = new System.Windows.Forms.Panel();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.DebugLabel = new System.Windows.Forms.Label();
             this.MIDIDataOff = new System.Windows.Forms.Label();
             this.MIDIDataOn = new System.Windows.Forms.Label();
             this.MapName = new System.Windows.Forms.Label();
@@ -40,7 +41,10 @@
             this.CCMapTabButton = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.NotePanel.SuspendLayout();
+            this.MainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // AboutButton
@@ -66,6 +70,7 @@
             this.OptionsButton.TabIndex = 12;
             this.OptionsButton.Text = "Options";
             this.OptionsButton.UseVisualStyleBackColor = false;
+            this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
             // 
             // NotePanel
             // 
@@ -86,6 +91,7 @@
             this.MainPanel.AutoScroll = true;
             this.MainPanel.BackColor = System.Drawing.Color.Black;
             this.MainPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MainPanel.Controls.Add(this.DebugLabel);
             this.MainPanel.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainPanel.Location = new System.Drawing.Point(-2, 24);
             this.MainPanel.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -93,12 +99,24 @@
             this.MainPanel.Size = new System.Drawing.Size(910, 458);
             this.MainPanel.TabIndex = 9;
             // 
+            // DebugLabel
+            // 
+            this.DebugLabel.BackColor = System.Drawing.Color.DarkGray;
+            this.DebugLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.DebugLabel.Font = new System.Drawing.Font("OCR A Extended", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DebugLabel.ForeColor = System.Drawing.Color.Black;
+            this.DebugLabel.Location = new System.Drawing.Point(101, 33);
+            this.DebugLabel.Name = "DebugLabel";
+            this.DebugLabel.Size = new System.Drawing.Size(539, 188);
+            this.DebugLabel.TabIndex = 5;
+            this.DebugLabel.Text = "Debug Data";
+            // 
             // MIDIDataOff
             // 
             this.MIDIDataOff.BackColor = System.Drawing.Color.Black;
             this.MIDIDataOff.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MIDIDataOff.ForeColor = System.Drawing.Color.White;
-            this.MIDIDataOff.Location = new System.Drawing.Point(585, 9);
+            this.MIDIDataOff.Location = new System.Drawing.Point(583, 9);
             this.MIDIDataOff.Name = "MIDIDataOff";
             this.MIDIDataOff.Size = new System.Drawing.Size(300, 22);
             this.MIDIDataOff.TabIndex = 7;
@@ -109,7 +127,7 @@
             this.MIDIDataOn.BackColor = System.Drawing.Color.Black;
             this.MIDIDataOn.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MIDIDataOn.ForeColor = System.Drawing.Color.White;
-            this.MIDIDataOn.Location = new System.Drawing.Point(286, 9);
+            this.MIDIDataOn.Location = new System.Drawing.Point(284, 9);
             this.MIDIDataOn.Name = "MIDIDataOn";
             this.MIDIDataOn.Size = new System.Drawing.Size(300, 22);
             this.MIDIDataOn.TabIndex = 8;
@@ -144,7 +162,7 @@
             this.NoteMapTabButton.BackColor = System.Drawing.Color.Red;
             this.NoteMapTabButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NoteMapTabButton.ForeColor = System.Drawing.Color.Black;
-            this.NoteMapTabButton.Location = new System.Drawing.Point(918, 240);
+            this.NoteMapTabButton.Location = new System.Drawing.Point(919, 108);
             this.NoteMapTabButton.Name = "NoteMapTabButton";
             this.NoteMapTabButton.Size = new System.Drawing.Size(97, 26);
             this.NoteMapTabButton.TabIndex = 12;
@@ -156,7 +174,7 @@
             this.CCMapTabButton.BackColor = System.Drawing.Color.Red;
             this.CCMapTabButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CCMapTabButton.ForeColor = System.Drawing.Color.Black;
-            this.CCMapTabButton.Location = new System.Drawing.Point(917, 311);
+            this.CCMapTabButton.Location = new System.Drawing.Point(919, 149);
             this.CCMapTabButton.Name = "CCMapTabButton";
             this.CCMapTabButton.Size = new System.Drawing.Size(97, 26);
             this.CCMapTabButton.TabIndex = 12;
@@ -187,6 +205,30 @@
             this.button2.Text = "Run Mode";
             this.button2.UseVisualStyleBackColor = false;
             // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.Red;
+            this.button3.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.Location = new System.Drawing.Point(918, 213);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(97, 26);
+            this.button3.TabIndex = 12;
+            this.button3.Text = "Copy Map";
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.Red;
+            this.button4.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.ForeColor = System.Drawing.Color.Black;
+            this.button4.Location = new System.Drawing.Point(918, 254);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(97, 26);
+            this.button4.TabIndex = 12;
+            this.button4.Text = "Paste Map";
+            this.button4.UseVisualStyleBackColor = false;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -197,14 +239,17 @@
             this.Controls.Add(this.NotePanel);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.OptionsButton);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.CCMapTabButton);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.NoteMapTabButton);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "MainWindow";
-            this.Size = new System.Drawing.Size(1029, 491);
+            this.Size = new System.Drawing.Size(1021, 491);
             this.Load += new System.EventHandler(this.MainWindow_Load);
             this.NotePanel.ResumeLayout(false);
+            this.MainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -223,6 +268,9 @@
         private System.Windows.Forms.Button CCMapTabButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label DebugLabel;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
 
     }
 }

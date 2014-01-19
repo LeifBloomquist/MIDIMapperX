@@ -16,13 +16,13 @@
         /// </summary>
         public MapNoteItem[] NoteMaps  { get; private set; }
 
-        public long idleCount = 0;
-        public long callCount = 0;
-        public long eventCount = 0;
-        public long midiCount = 0;
-        public long hitCount = 0;
+        public long idleCount { get; set; }
+        public long callCount { get; set; }
+        public long eventCount { get; set; }
+        public long midiCount { get; set; }
+        public long hitCount { get; set; }
 
-        public bool presetsLoaded = false;  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.
+        public bool presetsLoaded { get; set; }  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.
 
         /// <summary>
         /// Gets or sets the options set.
@@ -36,7 +36,14 @@
             : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2014 / Jacobi Software 2012", 2000),
                 VstPluginCategory.Synth, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
         {
-            NoteMaps = new MapNoteItem[128];
+            NoteMaps = new MapNoteItem[Constants.MAXNOTES];            
+            
+            for(int note=0; note<NoteMaps.Length; note++) 
+            {
+                NoteMaps[note] = new MapNoteItem();
+                NoteMaps[note].KeyName = "Note Map " + note;
+            }
+
             Options = new OptionSet();   
         }
 

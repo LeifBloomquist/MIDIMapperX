@@ -11,7 +11,7 @@
     /// </summary>
     class MidiProcessor : IVstMidiProcessor
     {
-        private Plugin _plugin;
+        private Plugin _plugin = null;
 
         /// <summary>
         /// Constructs a new instance.
@@ -38,6 +38,8 @@
         // Process the incoming VST events.  *** This is the core of the VST right here. ***
         public void Process(VstEventCollection inputEvents)
         {
+            if (_plugin == null) return;
+
             _plugin.callCount++;
 
             foreach (VstEvent evnt in inputEvents)
@@ -71,27 +73,29 @@
                 switch (command)
                 {
                     case 0x90: // Note On
-                        if (_plugin.NoteMaps[trigger].isDefined(true))
+                        map.TriggeredOn();
+
+                        if (map.isDefined(true))
                         {
                             _plugin.hitCount++;
                             midiData = MapNoteItem.StringToBytes(map.OutputBytesStringOn, channel, velocity);
-                            map.TriggeredOn();
+                           
                         }
                         break;
 
                     case 0x80: // Note Off
-                        if (_plugin.NoteMaps[trigger].isDefined(false))
+                        map.TriggeredOff();
+
+                        if (map.isDefined(false))
                         {
                             _plugin.hitCount++;
-                            midiData = MapNoteItem.StringToBytes(map.OutputBytesStringOff, channel, velocity);
-                            map.TriggeredOff();
+                            midiData = MapNoteItem.StringToBytes(map.OutputBytesStringOff, channel, velocity);                           
                         }
                         break;
 
                     default:
+                        // Do nothing
                         continue;
-                    // Do noto
-
                 }
 
                 // Check that we got a sane result

@@ -41,7 +41,7 @@
             this.OKBtn.BackColor = System.Drawing.Color.Red;
             this.OKBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OKBtn.Font = new System.Drawing.Font("OCR A Extended", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OKBtn.Location = new System.Drawing.Point(280, 10);
+            this.OKBtn.Location = new System.Drawing.Point(289, 10);
             this.OKBtn.Name = "OKBtn";
             this.OKBtn.Size = new System.Drawing.Size(75, 28);
             this.OKBtn.TabIndex = 5;
@@ -55,7 +55,7 @@
             this.CancelBtn.CausesValidation = false;
             this.CancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CancelBtn.Font = new System.Drawing.Font("OCR A Extended", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CancelBtn.Location = new System.Drawing.Point(280, 44);
+            this.CancelBtn.Location = new System.Drawing.Point(289, 44);
             this.CancelBtn.Name = "CancelBtn";
             this.CancelBtn.Size = new System.Drawing.Size(75, 28);
             this.CancelBtn.TabIndex = 6;
@@ -83,9 +83,9 @@
             this.ThruCheckbox.ForeColor = System.Drawing.Color.White;
             this.ThruCheckbox.Location = new System.Drawing.Point(15, 12);
             this.ThruCheckbox.Name = "ThruCheckbox";
-            this.ThruCheckbox.Size = new System.Drawing.Size(108, 21);
+            this.ThruCheckbox.Size = new System.Drawing.Size(270, 21);
             this.ThruCheckbox.TabIndex = 8;
-            this.ThruCheckbox.Text = "MIDI Thru";
+            this.ThruCheckbox.Text = "MIDI Thru on Unmapped Notes";
             this.ThruCheckbox.UseVisualStyleBackColor = false;
             // 
             // SysExCheckbox
@@ -111,7 +111,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(376, 134);
+            this.ClientSize = new System.Drawing.Size(376, 99);
             this.Controls.Add(this.SysExCheckbox);
             this.Controls.Add(this.AllThruCheckbox);
             this.Controls.Add(this.ThruCheckbox);

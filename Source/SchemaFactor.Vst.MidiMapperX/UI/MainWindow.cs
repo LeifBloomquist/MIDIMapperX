@@ -13,10 +13,14 @@ namespace SchemaFactor.Vst.MidiMapperX
     /// GUI Test 
     partial class MainWindow : DoubleBufferedUserControl
     {
-        private Plugin _plugin;    
+        private Plugin _plugin = null;
 
-        Random generator = new Random();
         Timer myTimer = new Timer();
+
+        MapperTextBox[] MapNums = new MapperTextBox[Constants.MAXNOTES];
+        MapperTextBox[] MapNames = new MapperTextBox[Constants.MAXNOTES];
+        MapperTextBox[] OnMaps = new MapperTextBox[Constants.MAXNOTES];
+        MapperTextBox[] OffMaps = new MapperTextBox[Constants.MAXNOTES];      
 
         /// <summary>
         /// Main Form Constructor.  Must be parameterless to avoid error CS0310.
@@ -29,7 +33,6 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, MainPanel, new object[] { true });
         }
-
 
         public void setPlugin(Plugin plugin)
         {
@@ -49,62 +52,78 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void InitializeGrid()
         {
-            int XNudge = MainPanel.Location.X;
+            int XNudge = MainPanel.Location.X + 3;
             int YSpacing = MapperTextBox.OCRFont.Height + 6;
             int YSize = 16;
 
-            for (int note = 0; note <= 127; note++)
+            for (int note = 0; note < Constants.MAXNOTES; note++)
             {
-                int Yloc = 2+ note * YSpacing;
+                int Yloc = 2 + note * YSpacing;
 
                 // Note Number                
-                MapperTextBox tb = new MapperTextBox(NoteNumber.Location.X - XNudge - 10, Yloc, NoteNumber.Size.Width, YSize, true);                
+                MapperTextBox tb = new MapperTextBox(NoteNumber.Location.X - XNudge - 10, Yloc, NoteNumber.Size.Width, YSize, true);                                
+                tb.Text = note.ToString("000");
+                MapNums[note] = tb;
                 MainPanel.Controls.Add(tb);
-                tb.Text = note.ToString("000");               
 
                 // Map Name
-                tb = new MapperTextBox(MapName.Location.X - XNudge, Yloc, MapName.Size.Width, YSize);                
+                tb = new MapperTextBox(MapName.Location.X - XNudge, Yloc, MapName.Size.Width, YSize);
+                tb.Text = "Undefined " + note;
+                MapNames[note] = tb;
                 MainPanel.Controls.Add(tb);
-                tb.Text = "Note Map " + note;
         
                 // Note On
                 tb = new MapperTextBox(MIDIDataOn.Location.X - XNudge, Yloc, MIDIDataOn.Size.Width, YSize);
+                OnMaps[note] = tb;
                 MainPanel.Controls.Add(tb);
 
                 // Note Off
                 tb = new MapperTextBox(MIDIDataOff.Location.X - XNudge, Yloc, MIDIDataOff.Size.Width, YSize);
+                OffMaps[note] = tb;
                 MainPanel.Controls.Add(tb);
             }
         }
 
-        // This is the method to run when the timer is raised.
-        // Animates the background of the Listview items.
-        // Note that to avoid flicker, we use a derived BufferdListview, and FL users must use Bridged mode.
-        private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        private void FillList()
         {
-            foreach (MapperTextBox mtb in MainPanel.Controls)
+           if (_plugin == null) return;
+           if ((!this.Created) || (_plugin.NoteMaps == null)) return;    
+
+            for (int note = 0; note < Constants.MAXNOTES; note++)
             {
-                //byte noteNo = Byte.Parse(item.Name);
+                MapNoteItem map = _plugin.NoteMaps[note];
 
-                int green = (int)(generator.NextDouble()*50f);   // was 255
-                int red   = 0;
+                if (map == null) return;
 
-                mtb.BackColor = Color.FromArgb(red, green, 0);
-            }
-
-
-            foreach (MapperTextBox mtb in MainPanel.Controls)            
-            {
-                int noteNo = item.Index;
-
-                int green = (int)(_plugin.NoteMaps[noteNo].TriggerPulseOn * 255);
-                int red = (int)(_plugin.NoteMaps[noteNo].TriggerPulseOff * 255);
-
-                item.SubItems[0].BackColor = Color.FromArgb(red, green, 0);
-                _plugin.NoteMaps[noteNo].Pulse();
+                MapNames[note].Text = map.KeyName;
+                OnMaps[note].Text = map.OutputBytesStringOn;
+                OffMaps[note].Text = map.OutputBytesStringOff;
             }
         }
 
+        // This is the method to run when the timer is raised.
+        // Animates the background of the textbox items.
+        private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        {
+            if (_plugin == null) return;
+            if ((!this.Created) || (_plugin.NoteMaps == null)) return; 
+
+            for (int note = 0; note < Constants.MAXNOTES; note++)
+            {
+                MapNoteItem map = _plugin.NoteMaps[note];
+
+                if (map == null) return;
+
+                int green = (int)(map.TriggerPulseOn * 255);
+                int red = (int)(map.TriggerPulseOff * 255);
+
+                MapNums[note].BackColor = Color.FromArgb(red, green, 0);
+                OnMaps[note].BackColor = Color.FromArgb(0, green, 0);
+                OffMaps[note].BackColor = Color.FromArgb(red, 0, 0);
+
+                map.Pulse();
+            }
+        }
 
         /// <summary>
         /// Updates the UI
@@ -118,11 +137,11 @@ namespace SchemaFactor.Vst.MidiMapperX
             // Act on the presets loaded flag.
             if (_plugin.presetsLoaded == true)
             {
-                //FillList();
+                FillList();
                 _plugin.presetsLoaded = false;
             }
 
- /*           // Debug info
+            // Debug info
             if (DebugLabel.Visible)
             {
                 DebugLabel.Text = "Idle:   " + _plugin.idleCount + "\n" +
@@ -132,15 +151,26 @@ namespace SchemaFactor.Vst.MidiMapperX
                                   "Hits:   " + _plugin.hitCount + "\n" +
                                   "Last Output: [" + MapNoteItem.lastOutputString + "]";
             }
-  */
         }
 
+        // "About" Button
         private void AboutButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(_plugin.ProductInfo.Vendor + "\n\n" +
                     _plugin.ProductInfo.Product + "\n\n" +
                     "Version: " + _plugin.ProductInfo.FormattedVersion + " BETA 2",
                     "Schema Factor MIDIMapperX");
+        }
+
+        // "Options" Button
+        private void OptionsButton_Click(object sender, EventArgs e)
+        {
+            OptionsUI dlg = new OptionsUI(_plugin.Options );
+
+            if (dlg.ShowDialog(this) == DialogResult.OK)
+            {
+                _plugin.Options = dlg.TempOptionSet;
+            }
         }
     }
 }

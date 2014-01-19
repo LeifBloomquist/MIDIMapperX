@@ -23,6 +23,11 @@
         {
             if (on)
             {
+                if (OutputBytesStringOn == null)
+                {
+                    return false;
+                }
+
                 if (OutputBytesStringOn.Equals(""))
                 {
                     return false;
@@ -30,6 +35,11 @@
             }
             else
             {
+                if (OutputBytesStringOff == null)
+                {
+                    return false;
+                }
+
                 if (OutputBytesStringOff.Equals(""))
                 {
                     return false;

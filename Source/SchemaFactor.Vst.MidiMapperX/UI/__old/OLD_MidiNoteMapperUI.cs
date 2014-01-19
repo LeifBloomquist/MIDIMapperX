@@ -13,7 +13,7 @@ namespace SchemaFactor.Vst.MidiMapperX
     /// </summary>
     partial class MidiNoteMapperUI : DoubleBufferedUserControl
     {
-        private Plugin _plugin;    
+        private Plugin _plugin = null;    
 
       
         private bool _showDebug = false;
