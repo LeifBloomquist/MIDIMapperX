@@ -131,38 +131,41 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AudioProcessor.cs" />
-    <Compile Include="BufferedListView.cs">
+    <Compile Include="UI\MainWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MapperTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DoubleBufferedUserControl.cs">
+    <Compile Include="VstNET\AudioProcessor.cs" />
+    <Compile Include="UI\BufferedListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="UI\DoubleBufferedUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="OptionSet.cs" />
-    <Compile Include="OptionsUI.cs">
+    <Compile Include="Mapper\OptionSet.cs" />
+    <Compile Include="UI\OptionsUI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OptionsUI.Designer.cs">
+    <Compile Include="UI\OptionsUI.Designer.cs">
       <DependentUpon>OptionsUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="MapNoteDetailsUI.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MapNoteDetailsUI.Designer.cs">
-      <DependentUpon>MapNoteDetailsUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MapNoteItem.cs" />
-    <Compile Include="MidiNoteMapperUI.cs">
+    <Compile Include="Mapper\MapNoteItem.cs" />
+    <Compile Include="UI\OLD_MidiNoteMapperUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MidiNoteMapperUI.Designer.cs">
-      <DependentUpon>MidiNoteMapperUI.cs</DependentUpon>
+    <Compile Include="UI\OLD_MidiNoteMapperUI.Designer.cs">
+      <DependentUpon>OLD_MidiNoteMapperUI.cs</DependentUpon>
     </Compile>
-    <Compile Include="MidiProcessor.cs" />
-    <Compile Include="Plugin.cs" />
-    <Compile Include="PluginCommandStub.cs" />
-    <Compile Include="PluginEditor.cs" />
-    <Compile Include="PluginPersistence.cs" />
+    <Compile Include="Mapper\MidiProcessor.cs" />
+    <Compile Include="VstNET\Plugin.cs" />
+    <Compile Include="VstNET\PluginCommandStub.cs" />
+    <Compile Include="VstNET\PluginEditor.cs" />
+    <Compile Include="VstNET\PluginPersistence.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -171,16 +174,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="OptionsUI.resx">
+    <EmbeddedResource Include="UI\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OptionsUI.resx">
       <DependentUpon>OptionsUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="MapNoteDetailsUI.resx">
-      <DependentUpon>MapNoteDetailsUI.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MidiNoteMapperUI.resx">
-      <DependentUpon>MidiNoteMapperUI.cs</DependentUpon>
+    <EmbeddedResource Include="UI\OLD_MidiNoteMapperUI.resx">
+      <DependentUpon>OLD_MidiNoteMapperUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -201,6 +203,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
