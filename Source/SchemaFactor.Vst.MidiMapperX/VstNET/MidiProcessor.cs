@@ -57,7 +57,7 @@
                 VstMidiEvent midiInputEvent = (VstMidiEvent)evnt;
                 byte command = (byte)(midiInputEvent.Data[0] & 0xF0);
                 byte channel = (byte)(midiInputEvent.Data[0] & 0x0F);
-                byte trigger = midiInputEvent.Data[1];
+                byte note = midiInputEvent.Data[1];
                 byte velocity = midiInputEvent.Data[2];
 
                 // If set in options, keep the original event
@@ -66,7 +66,7 @@
                     Events.Add(evnt);
                 }
 
-                MapNoteItem map = _plugin.NoteMaps[trigger];
+                MapNoteItem map = _plugin.NoteMaps[note];
                 byte[] midiData = null;
 
                 // Filter out everything except Note On/Note Off events
@@ -78,8 +78,7 @@
                         if (map.isDefined(true))
                         {
                             _plugin.hitCount++;
-                            midiData = MapNoteItem.StringToBytes(map.OutputBytesStringOn, channel, velocity);
-                           
+                            midiData = MapNoteItem.StringToBytes(map.OutputBytesStringOn, channel, velocity);                           
                         }
                         break;
 
@@ -101,11 +100,18 @@
                 // Check that we got a sane result
                 if (midiData == null) continue;
 
-                // Trick: Use VstMidiSysExEvent in place of VstMidiEvent, since this seems to allow arbitary bytes.                        
-                VstMidiSysExEvent mappedEvent = new VstMidiSysExEvent(midiInputEvent.DeltaFrames, midiData);
-                Events.Add(mappedEvent);
-
-
+                // In most cases, use VstMidiSysExEvent in place of VstMidiEvent, since this seems to allow arbitary bytes.      
+                if (_plugin.Options.AlwaysSysEx)
+                {
+                    VstMidiSysExEvent mappedEvent = new VstMidiSysExEvent(midiInputEvent.DeltaFrames, midiData);
+                    Events.Add(mappedEvent);
+                }
+                else
+                {
+                    VstMidiEvent mappedEvent = new VstMidiEvent(midiInputEvent.DeltaFrames, midiInputEvent.NoteLength, midiInputEvent.NoteOffset, midiData, midiInputEvent.Detune, midiInputEvent.NoteOffVelocity);
+                    Events.Add(mappedEvent);
+                }                
+                
                 //if (_plugin.Options.MidiThru)
                 //{
                 //// add original event

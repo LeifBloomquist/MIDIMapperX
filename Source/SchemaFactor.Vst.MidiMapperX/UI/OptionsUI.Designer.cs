@@ -41,7 +41,7 @@
             this.OKBtn.BackColor = System.Drawing.Color.Red;
             this.OKBtn.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OKBtn.Font = new System.Drawing.Font("OCR A Extended", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OKBtn.Location = new System.Drawing.Point(289, 10);
+            this.OKBtn.Location = new System.Drawing.Point(312, 10);
             this.OKBtn.Name = "OKBtn";
             this.OKBtn.Size = new System.Drawing.Size(75, 28);
             this.OKBtn.TabIndex = 5;
@@ -55,7 +55,7 @@
             this.CancelBtn.CausesValidation = false;
             this.CancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CancelBtn.Font = new System.Drawing.Font("OCR A Extended", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CancelBtn.Location = new System.Drawing.Point(289, 44);
+            this.CancelBtn.Location = new System.Drawing.Point(312, 44);
             this.CancelBtn.Name = "CancelBtn";
             this.CancelBtn.Size = new System.Drawing.Size(75, 28);
             this.CancelBtn.TabIndex = 6;
@@ -94,7 +94,6 @@
             this.SysExCheckbox.BackColor = System.Drawing.Color.Transparent;
             this.SysExCheckbox.Checked = true;
             this.SysExCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.SysExCheckbox.Enabled = false;
             this.SysExCheckbox.Font = new System.Drawing.Font("OCR A Extended", 11.25F);
             this.SysExCheckbox.ForeColor = System.Drawing.Color.White;
             this.SysExCheckbox.Location = new System.Drawing.Point(15, 63);
@@ -111,7 +110,7 @@
             this.BackColor = System.Drawing.Color.Black;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(376, 99);
+            this.ClientSize = new System.Drawing.Size(404, 99);
             this.Controls.Add(this.SysExCheckbox);
             this.Controls.Add(this.AllThruCheckbox);
             this.Controls.Add(this.ThruCheckbox);

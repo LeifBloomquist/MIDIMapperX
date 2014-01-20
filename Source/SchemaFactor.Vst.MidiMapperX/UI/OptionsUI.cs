@@ -22,6 +22,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             ThruCheckbox.Checked = opt.MidiThru;
             AllThruCheckbox.Checked = opt.MidiThruAll;
+            SysExCheckbox.Checked = opt.AlwaysSysEx;
 
             TempOptionSet = new OptionSet();
         }
@@ -39,6 +40,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             TempOptionSet.MidiThru = ThruCheckbox.Checked;
             TempOptionSet.MidiThruAll = AllThruCheckbox.Checked;
+            TempOptionSet.AlwaysSysEx = SysExCheckbox.Checked;
         }
     }
 }

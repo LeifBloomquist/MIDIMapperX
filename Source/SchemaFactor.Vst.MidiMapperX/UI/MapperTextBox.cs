@@ -13,7 +13,7 @@ namespace SchemaFactor.Vst.MidiMapperX
     {
         public static Font OCRFont = new Font("OCR A Extended", 10f);
 
-        public MapperTextBox(int x, int y, int width, int height)
+        public MapperTextBox(int x, int y, int width, int height, String tooltip)
         {            
             this.Location = new System.Drawing.Point(x, y);
             this.Size = new System.Drawing.Size(width, height);
@@ -22,17 +22,22 @@ namespace SchemaFactor.Vst.MidiMapperX
             this.BackColor = Color.Black;
             this.ForeColor = Color.White;
             this.BorderStyle = BorderStyle.FixedSingle;
-            this.WordWrap = false;        
+            this.WordWrap = false;            
     
+            // Events
             this.KeyPress += MapperTextBox_KeyPress;
+            this.GotFocus += MapperTextBox_GotFocus;
+            this.LostFocus += MapperTextBox_LostFocus;
 
+            // Tooptip
             ToolTip toolTip1 = new ToolTip();
             toolTip1.UseAnimation = true;
             toolTip1.IsBalloon = true;
-            toolTip1.SetToolTip(this, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note On/Off events.");
+            toolTip1.SetToolTip(this, tooltip);
         }
-      
-        public MapperTextBox(int x, int y, int width, int height, bool ro) : this(x, y+2, width, height)
+
+   
+        public MapperTextBox(int x, int y, int width, int height,  String tooltip, bool ro) : this(x, y+2, width, height, tooltip)
         {
             this.ReadOnly = ro;
             this.BorderStyle = BorderStyle.None;
@@ -41,10 +46,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void MapperTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            MessageBox.Show("Key pressed!");
-
-
-            this.BackColor = Color.Black;
+            this.BackColor = Color.BurlyWood;
 
             // this will only allow valid hex values [0-9][a-f][A-F] to be entered. See ASCII table. 
             char c = e.KeyChar;
@@ -54,7 +56,24 @@ namespace SchemaFactor.Vst.MidiMapperX
             }
         }
 
+        private void MapperTextBox_GotFocus(object sender, EventArgs e)
+        {
+            this.BackColor = Color.Blue;
+        }
 
+        private void MapperTextBox_LostFocus(object sender, EventArgs e)
+        {
+            if (this.CheckValid())
+            {
+                this.BackColor = Color.Black;
+                this.ForeColor = Color.White;
+            }            
+        }
+
+        /// <summary>
+        /// Check for valid entry.  True if OK.
+        /// </summary>
+        /// <returns>true if OK, false if parsing error.</returns>
         public bool CheckValid()
         {
             // Get rid of extra whitespace
@@ -68,6 +87,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             catch // All, assume parsing errors
             {
                 this.BackColor = Color.Yellow;
+                this.ForeColor = Color.Black;
                 return false;
             }
 

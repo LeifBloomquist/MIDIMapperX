@@ -19,6 +19,18 @@
         public string OutputBytesStringOn { get; set; }
         public string OutputBytesStringOff { get; set; }
 
+        public MapNoteItem()
+        {
+            KeyName = "Uninitialized";
+            OutputBytesStringOn = "";
+            OutputBytesStringOff = "";
+        }
+
+        /// <summary>
+        /// Determine if this mapping has been defined.
+        /// </summary>
+        /// <param name="on">Set to true for ON case, false for OFF case.</param>
+        /// <returns>True is defiend (non-empty)</returns>
         public bool isDefined(bool on)
         {
             if (on)

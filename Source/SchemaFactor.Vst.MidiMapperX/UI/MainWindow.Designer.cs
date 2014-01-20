@@ -39,10 +39,10 @@
             this.NoteNumber = new System.Windows.Forms.Label();
             this.NoteMapTabButton = new System.Windows.Forms.Button();
             this.CCMapTabButton = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.ModeButton = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.Mode = new System.Windows.Forms.Label();
             this.NotePanel.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -52,7 +52,7 @@
             this.AboutButton.BackColor = System.Drawing.Color.Red;
             this.AboutButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AboutButton.Location = new System.Drawing.Point(918, 461);
+            this.AboutButton.Location = new System.Drawing.Point(917, 461);
             this.AboutButton.Name = "AboutButton";
             this.AboutButton.Size = new System.Drawing.Size(98, 26);
             this.AboutButton.TabIndex = 11;
@@ -64,7 +64,7 @@
             // 
             this.OptionsButton.BackColor = System.Drawing.Color.Red;
             this.OptionsButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OptionsButton.Location = new System.Drawing.Point(919, 429);
+            this.OptionsButton.Location = new System.Drawing.Point(918, 429);
             this.OptionsButton.Name = "OptionsButton";
             this.OptionsButton.Size = new System.Drawing.Size(96, 26);
             this.OptionsButton.TabIndex = 12;
@@ -162,7 +162,7 @@
             this.NoteMapTabButton.BackColor = System.Drawing.Color.Red;
             this.NoteMapTabButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NoteMapTabButton.ForeColor = System.Drawing.Color.Black;
-            this.NoteMapTabButton.Location = new System.Drawing.Point(919, 108);
+            this.NoteMapTabButton.Location = new System.Drawing.Point(918, 108);
             this.NoteMapTabButton.Name = "NoteMapTabButton";
             this.NoteMapTabButton.Size = new System.Drawing.Size(97, 26);
             this.NoteMapTabButton.TabIndex = 12;
@@ -174,36 +174,25 @@
             this.CCMapTabButton.BackColor = System.Drawing.Color.Red;
             this.CCMapTabButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.CCMapTabButton.ForeColor = System.Drawing.Color.Black;
-            this.CCMapTabButton.Location = new System.Drawing.Point(919, 149);
+            this.CCMapTabButton.Location = new System.Drawing.Point(918, 149);
             this.CCMapTabButton.Name = "CCMapTabButton";
             this.CCMapTabButton.Size = new System.Drawing.Size(97, 26);
             this.CCMapTabButton.TabIndex = 12;
             this.CCMapTabButton.Text = "CC Maps";
             this.CCMapTabButton.UseVisualStyleBackColor = false;
             // 
-            // button1
+            // ModeButton
             // 
-            this.button1.BackColor = System.Drawing.Color.Red;
-            this.button1.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button1.Location = new System.Drawing.Point(919, 29);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(97, 26);
-            this.button1.TabIndex = 16;
-            this.button1.Text = "Edit Mode";
-            this.button1.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.Red;
-            this.button2.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.button2.Location = new System.Drawing.Point(919, 61);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(97, 26);
-            this.button2.TabIndex = 16;
-            this.button2.Text = "Run Mode";
-            this.button2.UseVisualStyleBackColor = false;
+            this.ModeButton.BackColor = System.Drawing.Color.Red;
+            this.ModeButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ModeButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ModeButton.Location = new System.Drawing.Point(918, 61);
+            this.ModeButton.Name = "ModeButton";
+            this.ModeButton.Size = new System.Drawing.Size(97, 26);
+            this.ModeButton.TabIndex = 16;
+            this.ModeButton.Text = "Run Mode";
+            this.ModeButton.UseVisualStyleBackColor = false;
+            this.ModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // button3
             // 
@@ -229,13 +218,26 @@
             this.button4.Text = "Paste Map";
             this.button4.UseVisualStyleBackColor = false;
             // 
+            // Mode
+            // 
+            this.Mode.BackColor = System.Drawing.Color.Black;
+            this.Mode.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Mode.ForeColor = System.Drawing.Color.White;
+            this.Mode.Location = new System.Drawing.Point(941, 36);
+            this.Mode.Margin = new System.Windows.Forms.Padding(0);
+            this.Mode.Name = "Mode";
+            this.Mode.Size = new System.Drawing.Size(51, 22);
+            this.Mode.TabIndex = 17;
+            this.Mode.Text = "Mode";
+            this.Mode.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.Mode);
+            this.Controls.Add(this.ModeButton);
             this.Controls.Add(this.NotePanel);
             this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.OptionsButton);
@@ -266,11 +268,11 @@
         private System.Windows.Forms.Label NoteNumber;
         private System.Windows.Forms.Button NoteMapTabButton;
         private System.Windows.Forms.Button CCMapTabButton;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button ModeButton;
         private System.Windows.Forms.Label DebugLabel;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label Mode;
 
     }
 }

@@ -18,7 +18,7 @@
             _plugin = plugin;
         }
 
-        #region IVstPluginPersistence Members
+#region IVstPluginPersistence Members
 
         public bool CanLoadChunk(VstPatchChunkInfo chunkInfo)
         {
@@ -29,9 +29,114 @@
         {
             if (_plugin == null) return;
 
+            bool headerok = false;
             BinaryReader reader = new BinaryReader(stream, _encoding);
 
-   
+            // Header
+            try
+            {
+                String header = reader.ReadString();
+                if (header.Equals(Constants.MIDIMAPPERX))
+                {
+                    headerok = true;
+                }
+            }
+            catch (Exception)
+            {
+                ;
+            }
+
+            if (!headerok)  // Version 1?
+            {
+                // TODO, use old reader code
+                ReadOldPreset(reader);
+                return;
+            }
+
+            // Version Number
+            int version = reader.ReadInt32();
+
+            if (version < Constants.VERSION)
+            {
+                // Special handling here.
+            }
+
+            // Number of maps 
+            int count = reader.ReadInt32();
+
+            if (count != Constants.MAXNOTES)
+            {
+                MessageBox.Show("Invalid number of maps stored: " + count, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Each map
+            for (int n = 0; n < count; n++)
+            {
+                MapNoteItem map = _plugin.NoteMaps[n];
+
+                map.KeyName = reader.ReadString();
+                map.OutputBytesStringOn = reader.ReadString();
+                map.OutputBytesStringOff = reader.ReadString();
+            }
+
+            // Options
+            try  // In case the preset was written with an older version that didn't have all these options yet.
+            {
+                _plugin.Options.MidiThru = reader.ReadBoolean();
+                _plugin.Options.MidiThruAll = reader.ReadBoolean();
+                _plugin.Options.AlwaysSysEx = reader.ReadBoolean();
+            }
+            catch // all, i.e. (System.IO.EndOfStreamException e)
+            {
+                // Note: This catch block never seems to be reached, investigate (Low priority)
+                MessageBox.Show("No Options block in preset", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            _plugin.presetsLoaded = true;
+        }
+
+        public void WritePrograms(Stream stream, VstProgramCollection programs)
+        {
+            if (_plugin == null) return;
+
+            BinaryWriter writer = new BinaryWriter(stream, _encoding);
+
+            // Header
+            writer.Write(Constants.MIDIMAPPERX);
+
+            // Version Number
+            writer.Write(_plugin.ProductInfo.Version);
+
+            // Number of maps (always MAXNOTES in this version, was flexible in version 1)
+            writer.Write(Constants.MAXNOTES);
+
+            // Each map
+            for (int note = 0; note < Constants.MAXNOTES; note++)
+            {
+                MapNoteItem map = _plugin.NoteMaps[note];
+                writer.Write(map.KeyName);
+                writer.Write(map.OutputBytesStringOn);
+                writer.Write(map.OutputBytesStringOff);
+            }
+
+            // Options
+            writer.Write(_plugin.Options.MidiThru);
+            writer.Write(_plugin.Options.MidiThruAll);
+            writer.Write(_plugin.Options.AlwaysSysEx);
+
+            // CCs (future)
+
+
+            writer.Close();
+        }
+
+#endregion
+
+
+        // This has not been tested!
+        private void ReadOldPreset(BinaryReader reader)
+        {
             int count = reader.ReadInt32();
 
             for (int n = 0; n < count; n++)
@@ -39,51 +144,27 @@
                 MapNoteItem item = new MapNoteItem();
 
                 item.KeyName = reader.ReadString();
-         //       item.TriggerNoteNumber = reader.ReadByte();
+                //       item.TriggerNoteNumber = reader.ReadByte();
                 item.OutputBytesStringOn = reader.ReadString();
                 item.OutputBytesStringOff = reader.ReadString();
 
-    //            _plugin.NoteMaps.Add(item);
+                //            _plugin.NoteMaps.Add(item);
             }
 
             try  // In case the preset was written with an older version that didn't have all these options yet.
             {
                 _plugin.Options.MidiThru = reader.ReadBoolean();
                 _plugin.Options.MidiThruAll = reader.ReadBoolean();
-                _plugin.Options.AlwaysSysEx = reader.ReadBoolean();                             
+                _plugin.Options.AlwaysSysEx = reader.ReadBoolean();
             }
             catch // all, i.e. (System.IO.EndOfStreamException e)
             {
                 // Note: This catch block never seems to be reached, investigate (Low priority)
                 MessageBox.Show("This map was created with an older version of the plugin.\n\nPlease check your options.");
-            }            
-
-            _plugin.presetsLoaded = true;
-        }
-
-        public void WritePrograms(Stream stream, VstProgramCollection programs)
-        {
-            if (_plugin != null) return;  // hack
-
-            BinaryWriter writer = new BinaryWriter(stream, _encoding);
-
-            writer.Write(_plugin.NoteMaps.Length);
-
-            foreach (MapNoteItem item in _plugin.NoteMaps)
-            {
-                writer.Write(item.KeyName);
-  //              writer.Write(item.TriggerNoteNumber);
-                writer.Write(item.OutputBytesStringOn);
-                writer.Write(item.OutputBytesStringOff);
             }
 
-            writer.Write(_plugin.Options.MidiThru);
-            writer.Write(_plugin.Options.MidiThruAll);
-            writer.Write(_plugin.Options.AlwaysSysEx);
-
-            writer.Close();
+            MessageBox.Show("This map was created with an older version of the plugin.\n\nPlease check your options.");
+            _plugin.presetsLoaded = true;
         }
-
-        #endregion
     }
 }
