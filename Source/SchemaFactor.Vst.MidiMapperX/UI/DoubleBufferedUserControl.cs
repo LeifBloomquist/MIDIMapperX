@@ -17,6 +17,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private Bitmap _backBuffer;
 
+        
         protected override void OnPaint(PaintEventArgs e)
         {
             if (_backBuffer == null)
@@ -36,11 +37,13 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             // base.OnPaint (e); //optional but not recommended
         }
-
+         
+        /*
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
             //Don't allow the background to paint
         }
+         * */
 
         protected override void OnSizeChanged(EventArgs e)
         {

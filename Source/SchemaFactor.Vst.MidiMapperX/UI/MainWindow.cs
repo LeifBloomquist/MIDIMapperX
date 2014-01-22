@@ -45,14 +45,12 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            myTimer.Tick += TimerEventProcessor;
-
             // Sets the timer interval to 50 milliseconds.
+            myTimer.Tick += TimerEventProcessor;            
             myTimer.Interval = 50;
 
             SwitchToRunMode();
         }
-
 
         private void InitializeGrid()
         {
@@ -74,6 +72,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 tb = new MapperTextBox(MapName.Location.X - XNudge, Yloc, MapName.Size.Width, YSize, "Enter a name for this mapping.");
                 tb.Text = "Undefined " + note;                
                 MapNames[note] = tb;
+                tb.nocheck = true;
                 MainPanel.Controls.Add(tb);
         
                 // Note On
@@ -174,39 +173,13 @@ namespace SchemaFactor.Vst.MidiMapperX
         private void OptionsButton_Click(object sender, EventArgs e)
         {
             OptionsUI dlg = new OptionsUI(_plugin.Options);
+            OptionsButton.ForeColor = Color.White;
 
             if (dlg.ShowDialog(this) == DialogResult.OK)
             {
                 _plugin.Options = dlg.TempOptionSet;
             }
-        }
-
-        private void ModeButton_Click(object sender, EventArgs e)
-        {
-            switch (CurrentMode)
-            {
-                // !!!! FLAW with this approach: Maps are only saved to memory if Run is pressed!
-
-                case Modes.EDIT:
-                    if (ParseMaps())
-                    {
-                        SwitchToRunMode();
-                        break;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Can't parse MIDI values - Please correct!");
-                        break; 
-                    }
-
-                case Modes.RUN:
-                    SwitchToEditMode();
-                    break;
-
-                default:
-                    MessageBox.Show(this, "Invalid Mode?? " + CurrentMode);
-                    break;
-            }
+            OptionsButton.ForeColor = Color.Black;
         }
 
         /// <summary>
@@ -215,6 +188,11 @@ namespace SchemaFactor.Vst.MidiMapperX
         /// <returns></returns>
         private bool ParseMaps()
         {
+            if (_plugin == null)  // Special case, only at startup
+            {
+                return true;
+            }
+
             bool pass = true;
 
             for (int note = 0; note < Constants.MAXNOTES; note++)
@@ -252,13 +230,27 @@ namespace SchemaFactor.Vst.MidiMapperX
         /// <summary>
         /// Switch to Run mode.
         /// </summary>
-        private void SwitchToRunMode()
+        private bool SwitchToRunMode()
         {
+            if (!ParseMaps())
+            {
+                return false;
+            }
+
             CurrentMode = Modes.RUN;
-            ModeButton.Text = "Running";
+            RunModeButton.ForeColor = Color.White;
+            EditModeButton.ForeColor = Color.Black;
             myTimer.Start();
 
-            // TODO, set edit boxes read-only
+            // Set edit boxes read-only            
+            for (int note = 0; note < Constants.MAXNOTES; note++)
+            {
+                MapNames[note].ReadOnly = true;
+                OnMaps[note].ReadOnly = true;
+                OffMaps[note].ReadOnly = true;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -267,10 +259,43 @@ namespace SchemaFactor.Vst.MidiMapperX
         private void SwitchToEditMode()
         {
             CurrentMode = Modes.EDIT;
-            ModeButton.Text = "Editing";
+            RunModeButton.ForeColor = Color.Black;
+            EditModeButton.ForeColor = Color.White;
             myTimer.Stop();
 
-            // TODO, set edit boxes editable
+            // Set edit boxes editable
+            for (int note = 0; note < Constants.MAXNOTES; note++)
+            {
+                MapNames[note].ReadOnly = false;
+                OnMaps[note].ReadOnly = false;
+                OffMaps[note].ReadOnly = false;
+            }
+        }
+
+        private void Debug_DoubleClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                DebugLabel.Visible = !DebugLabel.Visible;
+            }
+
+        }
+
+        private void RunModeButton_Click(object sender, EventArgs e)
+        {
+            if (SwitchToRunMode())
+            {
+                errorProvider1.SetError(RunModeButton, string.Empty);
+            }
+            else
+            {
+                errorProvider1.SetError(RunModeButton, "Can't run: Errors exist in your mappings!");    
+            }
+        }
+
+        private void EditModeButton_Click(object sender, EventArgs e)
+        {
+            SwitchToEditMode();
         }
     }
 }

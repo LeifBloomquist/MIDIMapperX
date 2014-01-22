@@ -92,6 +92,10 @@
                         }
                         break;
 
+                    case 0xB0: // Continuous Controller
+                        //System.Windows.Forms.MessageBox.Show("OMG!  CC!");
+                        break;
+
                     default:
                         // Do nothing
                         continue;

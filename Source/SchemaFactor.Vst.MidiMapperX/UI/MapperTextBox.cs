@@ -11,6 +11,8 @@ namespace SchemaFactor.Vst.MidiMapperX
 {
     class MapperTextBox : TextBox
     {
+        public bool nocheck { get; set; }
+
         public static Font OCRFont = new Font("OCR A Extended", 10f);
 
         public MapperTextBox(int x, int y, int width, int height, String tooltip)
@@ -42,11 +44,14 @@ namespace SchemaFactor.Vst.MidiMapperX
             this.ReadOnly = ro;
             this.BorderStyle = BorderStyle.None;
             this.TextAlign = HorizontalAlignment.Right;         
-        }
+        }        
 
         private void MapperTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            this.BackColor = Color.BurlyWood;
+            this.BackColor = Color.Blue;
+            this.ForeColor = Color.White;
+
+            if (nocheck) return;
 
             // this will only allow valid hex values [0-9][a-f][A-F] to be entered. See ASCII table. 
             char c = e.KeyChar;
@@ -58,7 +63,8 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void MapperTextBox_GotFocus(object sender, EventArgs e)
         {
-            this.BackColor = Color.Blue;
+            this.BackColor = Color.DarkBlue;
+            this.ForeColor = Color.White;
         }
 
         private void MapperTextBox_LostFocus(object sender, EventArgs e)
@@ -78,6 +84,8 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             // Get rid of extra whitespace
             this.Text = this.Text.Trim();
+
+            if (nocheck) return true;
 
             // Parse the strings with dummy substitution values to verify they're OK.  Don't use 0 as it may mask weird input ('NN33', for example)
             try

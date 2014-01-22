@@ -33,7 +33,7 @@
         /// Constructs a new instance.
         /// </summary>
         public Plugin()
-            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2014 / Jacobi Software 2012", Constants.VERSION),
+            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2014\nJacobi Software 2012", Constants.VERSION),
                 VstPluginCategory.Synth, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
         {
             NoteMaps = new MapNoteItem[Constants.MAXNOTES];            
