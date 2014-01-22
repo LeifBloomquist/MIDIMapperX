@@ -3,11 +3,15 @@
     using System.Collections.ObjectModel;
     using System.Windows.Forms;
 
+    using SchemaFactor.Vst.MidiMapperX;
+
     /// <summary>
     /// Represents one note mapping.
     /// </summary>
     public class MapNoteItem
     {
+      
+
         /// <summary>
         /// Gets or sets a readable name for this mapping item.
         /// </summary>
@@ -18,44 +22,72 @@
         /// </summary>
         public string OutputBytesStringOn { get; set; }
         public string OutputBytesStringOff { get; set; }
+        public string OutputBytesStringCC { get; set; }      
 
+        /// <summary>
+        /// Constructor.
+        /// </summary>
         public MapNoteItem()
         {
             KeyName = "Uninitialized";
             OutputBytesStringOn = "";
             OutputBytesStringOff = "";
+            OutputBytesStringCC = "";
         }
 
         /// <summary>
         /// Determine if this mapping has been defined.
         /// </summary>
-        /// <param name="on">Set to true for ON case, false for OFF case.</param>
-        /// <returns>True is defiend (non-empty)</returns>
-        public bool isDefined(bool on)
+        /// <param name="type">Set to type to check</param>
+        /// <returns>True is defined (non-empty)</returns>
+        public bool isDefined(Constants.MapTypes type)
         {
-            if (on)
+            switch (type)
             {
-                if (OutputBytesStringOn == null)
+                case Constants.MapTypes.ON:
                 {
-                    return false;
-                }
+                    if (OutputBytesStringOn == null)
+                    {
+                        return false;
+                    }
 
-                if (OutputBytesStringOn.Equals(""))
-                {
-                    return false;
+                    if (OutputBytesStringOn.Equals(""))
+                    {
+                        return false;
+                    }
                 }
-            }
-            else
-            {
-                if (OutputBytesStringOff == null)
-                {
-                    return false;
-                }
+                break;
 
-                if (OutputBytesStringOff.Equals(""))
+                case Constants.MapTypes.OFF:
                 {
-                    return false;
+                    if (OutputBytesStringOff == null)
+                    {
+                        return false;
+                    }
+
+                    if (OutputBytesStringOff.Equals(""))
+                    {
+                        return false;
+                    }
                 }
+                break;
+
+                case Constants.MapTypes.CC:
+                {
+                    if (OutputBytesStringCC == null)
+                    {
+                        return false;
+                    }
+
+                    if (OutputBytesStringCC.Equals(""))
+                    {
+                        return false;
+                    }
+                }
+                break;
+
+                default:
+                    return false;
             }
 
             return true;
@@ -66,30 +98,42 @@
         /// <summary>
         /// Gets the value for the "pulse" effect, 1.0 to 0.0 ON
         /// </summary>
-        public double TriggerPulseOn { get; set; }
-
-        /// <summary>
-        /// Gets the value for the "pulse" effect, 1.0 to 0.0 OFF
-        /// </summary>
+        public double TriggerPulseOn { get; private set; }
         public double TriggerPulseOff { get; private set; }
+        public double TriggerPulseCC { get; private set; }
 
-        public void TriggeredOn()
+        public void Triggered(Constants.MapTypes type)
         {
-            TriggerPulseOn  = 1.0;
-            TriggerPulseOff = 0.0;
+            switch (type)
+            {
+                case Constants.MapTypes.ON:
+                    TriggerPulseOn  = 1.0;
+                    break;
+
+                case Constants.MapTypes.OFF:
+                    TriggerPulseOff = 1.0;
+                    break;
+
+                case Constants.MapTypes.CC:
+                    TriggerPulseCC = 1.0;
+                    break;
+            }
+            return;
         }
-
-        public void TriggeredOff()
-        {
-            TriggerPulseOff = 1.0;
-            TriggerPulseOn  = 0.0;
-        } 
   
         public void Pulse()
         {           
             TriggerPulseOn  *= 0.9;
             TriggerPulseOff *= 0.6;
+            TriggerPulseCC  *= 0.6;
         }   
+
+        public void ClearPulse()
+        {           
+            TriggerPulseOn  = 0;
+            TriggerPulseOff = 0;
+            TriggerPulseCC  = 0;
+        }
 
         /// <summary>
         /// Stores the result of the last conversion, for debugging.

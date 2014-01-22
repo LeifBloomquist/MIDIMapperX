@@ -16,13 +16,15 @@
         /// </summary>
         public MapNoteItem[] NoteMaps  { get; private set; }
 
-        public long idleCount { get; set; }
-        public long callCount { get; set; }
-        public long eventCount { get; set; }
-        public long midiCount { get; set; }
-        public long hitCount { get; set; }
+        public ulong idleCount { get; set; }
+        public ulong callCount { get; set; }
+        public ulong eventCount { get; set; }
+        public ulong midiCount { get; set; }
+        public ulong hitCount { get; set; }
 
         public bool presetsLoaded { get; set; }  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.
+
+        public Constants.Modes CurrentMode = Constants.Modes.RUN;
 
         /// <summary>
         /// Gets or sets the options set.
@@ -33,7 +35,7 @@
         /// Constructs a new instance.
         /// </summary>
         public Plugin()
-            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2014\nJacobi Software 2012", Constants.VERSION),
+            : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2014   Jacobi Software 2012", Constants.VERSION),
                 VstPluginCategory.Synth, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
         {
             NoteMaps = new MapNoteItem[Constants.MAXNOTES];            

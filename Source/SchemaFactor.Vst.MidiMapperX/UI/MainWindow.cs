@@ -13,9 +13,6 @@ namespace SchemaFactor.Vst.MidiMapperX
     /// GUI Test 
     partial class MainWindow : DoubleBufferedUserControl
     {        
-        private enum Modes {RUN=1, EDIT=2};
-        private Modes CurrentMode = Modes.RUN;
-
         private Plugin _plugin = null;
 
         Timer myTimer = new Timer();
@@ -23,7 +20,8 @@ namespace SchemaFactor.Vst.MidiMapperX
         MapperTextBox[] MapNums = new MapperTextBox[Constants.MAXNOTES];
         MapperTextBox[] MapNames = new MapperTextBox[Constants.MAXNOTES];
         MapperTextBox[] OnMaps = new MapperTextBox[Constants.MAXNOTES];
-        MapperTextBox[] OffMaps = new MapperTextBox[Constants.MAXNOTES];      
+        MapperTextBox[] OffMaps = new MapperTextBox[Constants.MAXNOTES];
+        MapperTextBox[] CCMaps = new MapperTextBox[Constants.MAXNOTES];
 
         /// <summary>
         /// Main Form Constructor.  Must be parameterless to avoid error CS0310.
@@ -39,8 +37,9 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         public void setPlugin(Plugin plugin)
         {
-            _plugin = plugin;
+            _plugin = plugin;            
             FillList();
+            SwitchToRunMode();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -48,8 +47,6 @@ namespace SchemaFactor.Vst.MidiMapperX
             // Sets the timer interval to 50 milliseconds.
             myTimer.Tick += TimerEventProcessor;            
             myTimer.Interval = 50;
-
-            SwitchToRunMode();
         }
 
         private void InitializeGrid()
@@ -82,9 +79,15 @@ namespace SchemaFactor.Vst.MidiMapperX
                 MainPanel.Controls.Add(tb);
 
                 // Note Off
-                tb = new MapperTextBox(MIDIDataOff.Location.X - XNudge, Yloc, MIDIDataOff.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Off events.");
+                tb = new MapperTextBox(MIDIDataOff.Location.X - XNudge, Yloc, MIDIDataOff.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note Off events.");
                 tb.CharacterCasing = CharacterCasing.Upper;
                 OffMaps[note] = tb;
+                MainPanel.Controls.Add(tb);
+
+                // New!  CCs
+                tb = new MapperTextBox(MIDIDataCC.Location.X - XNudge, Yloc, MIDIDataCC.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Value from original CC.\nLeave blank to ignore CC events.");
+                tb.CharacterCasing = CharacterCasing.Upper;
+                CCMaps[note] = tb;
                 MainPanel.Controls.Add(tb);
             }
         }
@@ -103,6 +106,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 MapNames[note].Text = map.KeyName;
                 OnMaps[note].Text = map.OutputBytesStringOn;
                 OffMaps[note].Text = map.OutputBytesStringOff;
+                CCMaps[note].Text = map.OutputBytesStringCC;
             }
         }
 
@@ -111,9 +115,9 @@ namespace SchemaFactor.Vst.MidiMapperX
         private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
             if (_plugin == null) return;
-            if ((!this.Created) || (_plugin.NoteMaps == null)) return; 
+            if ((!this.Created) || (_plugin.NoteMaps == null)) return;
 
-            if (CurrentMode != Modes.RUN) return;
+            if (_plugin.CurrentMode != Constants.Modes.RUN) return;
 
             for (int note = 0; note < Constants.MAXNOTES; note++)
             {
@@ -123,10 +127,12 @@ namespace SchemaFactor.Vst.MidiMapperX
 
                 int green = (int)(map.TriggerPulseOn * 255);
                 int red = (int)(map.TriggerPulseOff * 255);
+                int blue = (int)(map.TriggerPulseCC * 255);
 
                 MapNums[note].BackColor = Color.FromArgb(red, green, 0);
                 OnMaps[note].BackColor = Color.FromArgb(0, green, 0);
                 OffMaps[note].BackColor = Color.FromArgb(red, 0, 0);
+                CCMaps[note].BackColor = Color.FromArgb(0, 0, blue);
 
                 map.Pulse();
             }
@@ -163,15 +169,24 @@ namespace SchemaFactor.Vst.MidiMapperX
         // "About" Button
         private void AboutButton_Click(object sender, EventArgs e)
         {
+            if (_plugin == null) return;
+
+            AboutButton.ForeColor = Color.White;
+
             MessageBox.Show(_plugin.ProductInfo.Vendor + "\n\n" +
                     _plugin.ProductInfo.Product + "\n\n" +
                     "Version: " + _plugin.ProductInfo.FormattedVersion + " BETA 2",
                     "Schema Factor MIDIMapperX");
+
+            AboutButton.ForeColor = Color.Black;
         }
+
 
         // "Options" Button
         private void OptionsButton_Click(object sender, EventArgs e)
         {
+            if (_plugin == null) return;
+
             OptionsUI dlg = new OptionsUI(_plugin.Options);
             OptionsButton.ForeColor = Color.White;
 
@@ -206,6 +221,11 @@ namespace SchemaFactor.Vst.MidiMapperX
                 {
                     pass = false;
                 }
+
+                if (!CCMaps[note].CheckValid())
+                {
+                    pass = false;
+                }                
             }
 
             // !!!! FLAW with this approach: Maps are only saved to memory if Run is pressed!
@@ -217,6 +237,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                     _plugin.NoteMaps[note].KeyName = MapNames[note].Text;
                     _plugin.NoteMaps[note].OutputBytesStringOn = OnMaps[note].Text;
                     _plugin.NoteMaps[note].OutputBytesStringOff = OffMaps[note].Text;
+                    _plugin.NoteMaps[note].OutputBytesStringCC = CCMaps[note].Text;                    
                 }
             }
             else
@@ -232,15 +253,14 @@ namespace SchemaFactor.Vst.MidiMapperX
         /// </summary>
         private bool SwitchToRunMode()
         {
+            if (_plugin == null) return true;
+
             if (!ParseMaps())
             {
                 return false;
             }
 
-            CurrentMode = Modes.RUN;
-            RunModeButton.ForeColor = Color.White;
-            EditModeButton.ForeColor = Color.Black;
-            myTimer.Start();
+            _plugin.CurrentMode = Constants.Modes.RUN;
 
             // Set edit boxes read-only            
             for (int note = 0; note < Constants.MAXNOTES; note++)
@@ -248,7 +268,12 @@ namespace SchemaFactor.Vst.MidiMapperX
                 MapNames[note].ReadOnly = true;
                 OnMaps[note].ReadOnly = true;
                 OffMaps[note].ReadOnly = true;
+                CCMaps[note].ReadOnly = true;
             }
+
+            RunModeButton.ForeColor = Color.White;
+            EditModeButton.ForeColor = Color.Black;
+            myTimer.Start();
 
             return true;
         }
@@ -258,7 +283,10 @@ namespace SchemaFactor.Vst.MidiMapperX
         /// </summary>
         private void SwitchToEditMode()
         {
-            CurrentMode = Modes.EDIT;
+            if (_plugin == null) return;
+
+            _plugin.CurrentMode = Constants.Modes.EDIT;
+
             RunModeButton.ForeColor = Color.Black;
             EditModeButton.ForeColor = Color.White;
             myTimer.Stop();
@@ -269,6 +297,9 @@ namespace SchemaFactor.Vst.MidiMapperX
                 MapNames[note].ReadOnly = false;
                 OnMaps[note].ReadOnly = false;
                 OffMaps[note].ReadOnly = false;
+                CCMaps[note].ReadOnly = false;
+
+                _plugin.NoteMaps[note].ClearPulse();
             }
         }
 

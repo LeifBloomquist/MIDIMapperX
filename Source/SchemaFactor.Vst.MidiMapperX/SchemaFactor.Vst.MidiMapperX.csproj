@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Constants.cs" />
+    <Compile Include="Mapper\MapNoteItem.cs" />
     <Compile Include="UI\MainWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,9 +143,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="VstNET\AudioProcessor.cs" />
-    <Compile Include="UI\__old\BufferedListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="UI\DoubleBufferedUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -154,13 +152,6 @@
     </Compile>
     <Compile Include="UI\OptionsUI.Designer.cs">
       <DependentUpon>OptionsUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Mapper\MapNoteItem.cs" />
-    <Compile Include="UI\__old\OLD_MidiNoteMapperUI.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UI\__old\OLD_MidiNoteMapperUI.Designer.cs">
-      <DependentUpon>OLD_MidiNoteMapperUI.cs</DependentUpon>
     </Compile>
     <Compile Include="VstNET\MidiProcessor.cs" />
     <Compile Include="VstNET\Plugin.cs" />
@@ -180,10 +171,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OptionsUI.resx">
       <DependentUpon>OptionsUI.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\__old\OLD_MidiNoteMapperUI.resx">
-      <DependentUpon>OLD_MidiNoteMapperUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

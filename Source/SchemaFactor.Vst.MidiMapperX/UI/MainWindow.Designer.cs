@@ -36,17 +36,15 @@
             this.NotePanel = new System.Windows.Forms.Panel();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.DebugLabel = new System.Windows.Forms.Label();
+            this.MIDIDataCC = new System.Windows.Forms.Label();
             this.MIDIDataOff = new System.Windows.Forms.Label();
             this.MIDIDataOn = new System.Windows.Forms.Label();
             this.MapName = new System.Windows.Forms.Label();
             this.NoteNumber = new System.Windows.Forms.Label();
             this.AboutButton = new System.Windows.Forms.Button();
-            this.NoteMapTabButton = new System.Windows.Forms.Button();
             this.OptionsButton = new System.Windows.Forms.Button();
-            this.CCMapTabButton = new System.Windows.Forms.Button();
             this.EditModeButton = new System.Windows.Forms.Button();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.NotePanel.SuspendLayout();
@@ -72,7 +70,7 @@
             this.RunModeButton.BackColor = System.Drawing.Color.Red;
             this.RunModeButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RunModeButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.RunModeButton.Location = new System.Drawing.Point(915, 54);
+            this.RunModeButton.Location = new System.Drawing.Point(914, 54);
             this.RunModeButton.Name = "RunModeButton";
             this.RunModeButton.Size = new System.Drawing.Size(87, 26);
             this.RunModeButton.TabIndex = 35;
@@ -96,6 +94,7 @@
             // 
             this.NotePanel.BackColor = System.Drawing.Color.Transparent;
             this.NotePanel.Controls.Add(this.MainPanel);
+            this.NotePanel.Controls.Add(this.MIDIDataCC);
             this.NotePanel.Controls.Add(this.MIDIDataOff);
             this.NotePanel.Controls.Add(this.MIDIDataOn);
             this.NotePanel.Controls.Add(this.MapName);
@@ -132,36 +131,47 @@
             this.DebugLabel.Text = "Debug Data";
             this.DebugLabel.Visible = false;
             // 
+            // MIDIDataCC
+            // 
+            this.MIDIDataCC.BackColor = System.Drawing.Color.Transparent;
+            this.MIDIDataCC.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MIDIDataCC.ForeColor = System.Drawing.Color.White;
+            this.MIDIDataCC.Location = new System.Drawing.Point(655, 8);
+            this.MIDIDataCC.Name = "MIDIDataCC";
+            this.MIDIDataCC.Size = new System.Drawing.Size(225, 22);
+            this.MIDIDataCC.TabIndex = 12;
+            this.MIDIDataCC.Text = "Data to Send (CC)";
+            // 
             // MIDIDataOff
             // 
             this.MIDIDataOff.BackColor = System.Drawing.Color.Transparent;
             this.MIDIDataOff.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MIDIDataOff.ForeColor = System.Drawing.Color.White;
-            this.MIDIDataOff.Location = new System.Drawing.Point(583, 9);
+            this.MIDIDataOff.Location = new System.Drawing.Point(431, 8);
             this.MIDIDataOff.Name = "MIDIDataOff";
-            this.MIDIDataOff.Size = new System.Drawing.Size(300, 22);
+            this.MIDIDataOff.Size = new System.Drawing.Size(225, 22);
             this.MIDIDataOff.TabIndex = 7;
-            this.MIDIDataOff.Text = "MIDI Data to Send (Note Off)";
+            this.MIDIDataOff.Text = "Data to Send (Note Off)";
             // 
             // MIDIDataOn
             // 
             this.MIDIDataOn.BackColor = System.Drawing.Color.Transparent;
             this.MIDIDataOn.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MIDIDataOn.ForeColor = System.Drawing.Color.White;
-            this.MIDIDataOn.Location = new System.Drawing.Point(284, 9);
+            this.MIDIDataOn.Location = new System.Drawing.Point(207, 8);
             this.MIDIDataOn.Name = "MIDIDataOn";
-            this.MIDIDataOn.Size = new System.Drawing.Size(300, 22);
+            this.MIDIDataOn.Size = new System.Drawing.Size(225, 22);
             this.MIDIDataOn.TabIndex = 8;
-            this.MIDIDataOn.Text = "MIDI Data to Send (Note On)";
+            this.MIDIDataOn.Text = "Data to Send (Note On)";
             // 
             // MapName
             // 
             this.MapName.BackColor = System.Drawing.Color.Transparent;
             this.MapName.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MapName.ForeColor = System.Drawing.Color.White;
-            this.MapName.Location = new System.Drawing.Point(75, 9);
+            this.MapName.Location = new System.Drawing.Point(46, 8);
             this.MapName.Name = "MapName";
-            this.MapName.Size = new System.Drawing.Size(210, 22);
+            this.MapName.Size = new System.Drawing.Size(162, 22);
             this.MapName.TabIndex = 10;
             this.MapName.Text = "Map Name";
             // 
@@ -170,12 +180,12 @@
             this.NoteNumber.BackColor = System.Drawing.Color.Transparent;
             this.NoteNumber.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NoteNumber.ForeColor = System.Drawing.Color.White;
-            this.NoteNumber.Location = new System.Drawing.Point(21, 9);
+            this.NoteNumber.Location = new System.Drawing.Point(-6, 8);
             this.NoteNumber.Margin = new System.Windows.Forms.Padding(0);
             this.NoteNumber.Name = "NoteNumber";
             this.NoteNumber.Size = new System.Drawing.Size(51, 22);
             this.NoteNumber.TabIndex = 11;
-            this.NoteNumber.Text = "Note#";
+            this.NoteNumber.Text = "Map#";
             this.NoteNumber.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // AboutButton
@@ -191,23 +201,11 @@
             this.AboutButton.UseVisualStyleBackColor = false;
             this.AboutButton.Click += new System.EventHandler(this.AboutButton_Click);
             // 
-            // NoteMapTabButton
-            // 
-            this.NoteMapTabButton.BackColor = System.Drawing.Color.Red;
-            this.NoteMapTabButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NoteMapTabButton.ForeColor = System.Drawing.Color.Black;
-            this.NoteMapTabButton.Location = new System.Drawing.Point(915, 244);
-            this.NoteMapTabButton.Name = "NoteMapTabButton";
-            this.NoteMapTabButton.Size = new System.Drawing.Size(87, 26);
-            this.NoteMapTabButton.TabIndex = 43;
-            this.NoteMapTabButton.Text = "Note Maps";
-            this.NoteMapTabButton.UseVisualStyleBackColor = false;
-            // 
             // OptionsButton
             // 
             this.OptionsButton.BackColor = System.Drawing.Color.Red;
             this.OptionsButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OptionsButton.Location = new System.Drawing.Point(915, 447);
+            this.OptionsButton.Location = new System.Drawing.Point(914, 447);
             this.OptionsButton.Name = "OptionsButton";
             this.OptionsButton.Size = new System.Drawing.Size(87, 26);
             this.OptionsButton.TabIndex = 39;
@@ -215,24 +213,12 @@
             this.OptionsButton.UseVisualStyleBackColor = false;
             this.OptionsButton.Click += new System.EventHandler(this.OptionsButton_Click);
             // 
-            // CCMapTabButton
-            // 
-            this.CCMapTabButton.BackColor = System.Drawing.Color.Red;
-            this.CCMapTabButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CCMapTabButton.ForeColor = System.Drawing.Color.Black;
-            this.CCMapTabButton.Location = new System.Drawing.Point(915, 276);
-            this.CCMapTabButton.Name = "CCMapTabButton";
-            this.CCMapTabButton.Size = new System.Drawing.Size(87, 26);
-            this.CCMapTabButton.TabIndex = 41;
-            this.CCMapTabButton.Text = "CC Maps";
-            this.CCMapTabButton.UseVisualStyleBackColor = false;
-            // 
             // EditModeButton
             // 
             this.EditModeButton.BackColor = System.Drawing.Color.Red;
             this.EditModeButton.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.EditModeButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.EditModeButton.Location = new System.Drawing.Point(915, 86);
+            this.EditModeButton.Location = new System.Drawing.Point(914, 86);
             this.EditModeButton.Name = "EditModeButton";
             this.EditModeButton.Size = new System.Drawing.Size(87, 26);
             this.EditModeButton.TabIndex = 44;
@@ -243,19 +229,6 @@
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("OCR A Extended", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(915, 220);
-            this.label1.Margin = new System.Windows.Forms.Padding(0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(87, 20);
-            this.label1.TabIndex = 45;
-            this.label1.Text = "Mappings";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
             // label2
             // 
@@ -278,13 +251,10 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.Logo);
             this.Controls.Add(this.EditModeButton);
             this.Controls.Add(this.AboutButton);
-            this.Controls.Add(this.NoteMapTabButton);
             this.Controls.Add(this.OptionsButton);
-            this.Controls.Add(this.CCMapTabButton);
             this.Controls.Add(this.NotePanel);
             this.Controls.Add(this.Mode);
             this.Controls.Add(this.RunModeButton);
@@ -314,13 +284,11 @@
         private System.Windows.Forms.Label MapName;
         private System.Windows.Forms.Label NoteNumber;
         private System.Windows.Forms.Button AboutButton;
-        private System.Windows.Forms.Button NoteMapTabButton;
         private System.Windows.Forms.Button OptionsButton;
-        private System.Windows.Forms.Button CCMapTabButton;
         private System.Windows.Forms.Button EditModeButton;
         private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label MIDIDataCC;
 
 
     }

@@ -37,7 +37,6 @@ namespace SchemaFactor.Vst.MidiMapperX
             toolTip1.IsBalloon = true;
             toolTip1.SetToolTip(this, tooltip);
         }
-
    
         public MapperTextBox(int x, int y, int width, int height,  String tooltip, bool ro) : this(x, y+2, width, height, tooltip)
         {
@@ -48,12 +47,12 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void MapperTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            this.BackColor = Color.Blue;
+            this.BackColor = Color.FromArgb(15, 15, 15);
             this.ForeColor = Color.White;
 
             if (nocheck) return;
 
-            // this will only allow valid hex values [0-9][a-f][A-F] to be entered. See ASCII table. 
+            // This will only allow valid hex values [0-9][a-f][A-F], spaces, n, and v to be entered.
             char c = e.KeyChar;
             if (c != '\b' && !((c <= 'f' && c >= 'a') || (c <= 'F' && c >= 'A') || (c >= '0' && c <= '9') || (c == ' ') || (c == 'n') || (c == 'v')))
             {
@@ -63,7 +62,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void MapperTextBox_GotFocus(object sender, EventArgs e)
         {
-            this.BackColor = Color.DarkBlue;
+            this.BackColor = Color.FromArgb(10, 10, 10);
             this.ForeColor = Color.White;
         }
 
