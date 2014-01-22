@@ -70,25 +70,41 @@ namespace SchemaFactor.Vst.MidiMapperX
                 tb.Text = "Undefined " + note;                
                 MapNames[note] = tb;
                 tb.nocheck = true;
+                tb.LostFocus += TextBoxEdited;
                 MainPanel.Controls.Add(tb);
         
                 // Note On
                 tb = new MapperTextBox(MIDIDataOn.Location.X - XNudge, Yloc, MIDIDataOn.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note On events.");
                 tb.CharacterCasing = CharacterCasing.Upper;
                 OnMaps[note] = tb;
+                tb.LostFocus += TextBoxEdited;
                 MainPanel.Controls.Add(tb);
 
                 // Note Off
                 tb = new MapperTextBox(MIDIDataOff.Location.X - XNudge, Yloc, MIDIDataOff.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note Off events.");
                 tb.CharacterCasing = CharacterCasing.Upper;
                 OffMaps[note] = tb;
+                tb.LostFocus += TextBoxEdited;
                 MainPanel.Controls.Add(tb);
 
                 // New!  CCs
                 tb = new MapperTextBox(MIDIDataCC.Location.X - XNudge, Yloc, MIDIDataCC.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Value from original CC.\nLeave blank to ignore CC events.");
                 tb.CharacterCasing = CharacterCasing.Upper;
                 CCMaps[note] = tb;
+                tb.LostFocus += TextBoxEdited;
                 MainPanel.Controls.Add(tb);
+            }
+        }
+
+        private void TextBoxEdited(object sender, EventArgs e)
+        {
+            MapperTextBox mtb = (MapperTextBox)sender;
+            if (mtb.Changed)
+            {
+                // Recheck the whole thing.  potentially wasteful!  Especially since each MapperTextBox does its own checking.
+                ParseMaps();
+                MessageBox.Show(this, "Changed" + mtb.Text);
+                mtb.Changed = false;
             }
         }
 

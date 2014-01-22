@@ -12,6 +12,7 @@ namespace SchemaFactor.Vst.MidiMapperX
     class MapperTextBox : TextBox
     {
         public bool nocheck { get; set; }
+        public bool Changed { get; set; }
 
         public static Font OCRFont = new Font("OCR A Extended", 10f);
 
@@ -36,6 +37,8 @@ namespace SchemaFactor.Vst.MidiMapperX
             toolTip1.UseAnimation = true;
             toolTip1.IsBalloon = true;
             toolTip1.SetToolTip(this, tooltip);
+
+            Changed = false;
         }
    
         public MapperTextBox(int x, int y, int width, int height,  String tooltip, bool ro) : this(x, y+2, width, height, tooltip)
@@ -49,6 +52,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             this.BackColor = Color.FromArgb(15, 15, 15);
             this.ForeColor = Color.White;
+            Changed = true;
 
             if (nocheck) return;
 
@@ -64,6 +68,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             this.BackColor = Color.FromArgb(10, 10, 10);
             this.ForeColor = Color.White;
+            Changed = false;
         }
 
         private void MapperTextBox_LostFocus(object sender, EventArgs e)
