@@ -17,6 +17,8 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         Timer myTimer = new Timer();
 
+        string lastedit = "";
+
         MapperTextBox[] MapNums = new MapperTextBox[Constants.MAXNOTES];
         MapperTextBox[] MapNames = new MapperTextBox[Constants.MAXNOTES];
         MapperTextBox[] OnMaps = new MapperTextBox[Constants.MAXNOTES];
@@ -101,9 +103,11 @@ namespace SchemaFactor.Vst.MidiMapperX
             MapperTextBox mtb = (MapperTextBox)sender;
             if (mtb.Changed)
             {
-                // Recheck the whole thing.  potentially wasteful!  Especially since each MapperTextBox does its own checking.
-                ParseMaps();
-                MessageBox.Show(this, "Changed" + mtb.Text);
+                lastedit = mtb.Text;
+
+                // Recheck the whole thing, and most inportantly parse them into memory.
+                // Potentially wasteful!  Especially since each MapperTextBox does its own checking.
+                ParseMaps();                
                 mtb.Changed = false;
             }
         }
@@ -172,17 +176,20 @@ namespace SchemaFactor.Vst.MidiMapperX
                 if (_plugin.olderpresetswarning)
                 {
                     MessageBox.Show(this, "This map set was created with an older version of the plugin.\n\nPlease check your maps and options.", "MIDIMapperX", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    SwitchToEditMode();
                 }
             }
 
             // Debug info
             if (DebugLabel.Visible)
             {
-                DebugLabel.Text = "Idle:   " + _plugin.idleCount + "\n" +
-                                  "Calls:  " + _plugin.callCount + "\n" +
-                                  "Events: " + _plugin.eventCount + "\n" +
-                                  "MIDI:   " + _plugin.midiCount + "\n" +
-                                  "Hits:   " + _plugin.hitCount + "\n" +
+                DebugLabel.Text = "Mode:        " + _plugin.CurrentMode.ToString() + "\n" +
+                                  "Idle:        " + _plugin.idleCount + "\n" +
+                                  "Calls:       " + _plugin.callCount + "\n" +
+                                  "Events:      " + _plugin.eventCount + "\n" +
+                                  "MIDI:        " + _plugin.midiCount + "\n" +
+                                  "Hits:        " + _plugin.hitCount + "\n" +
+                                  "Last Edit:   [" + lastedit + "]\n" +
                                   "Last Output: [" + MapNoteItem.lastOutputString + "]";
             }
         }
@@ -194,10 +201,13 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             AboutButton.ForeColor = Color.White;
 
-            MessageBox.Show(_plugin.ProductInfo.Vendor + "\n\n" +
-                    _plugin.ProductInfo.Product + "\n\n" +
-                    "Version: " + _plugin.ProductInfo.FormattedVersion + " BETA 2",
-                    "Schema Factor MIDIMapperX");
+            MessageBox.Show(this, 
+                    _plugin.ProductInfo.Vendor + "\n\n" +
+                    _plugin.ProductInfo.Product + "   " +
+                    "Version: " + _plugin.ProductInfo.FormattedVersion + " RC 1",
+                    "Schema Factor MIDIMapperX",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
             AboutButton.ForeColor = Color.Black;
         }
@@ -278,6 +288,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             if (!ParseMaps())
             {
+                errorProvider1.SetError(RunModeButton, "Can't enter Run Mode: Errors exist in your mappings!");    
                 return false;
             }
 
@@ -296,6 +307,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             EditModeButton.ForeColor = Color.Black;
             myTimer.Start();
 
+            errorProvider1.SetError(RunModeButton, string.Empty);
             return true;
         }
 
@@ -335,14 +347,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         private void RunModeButton_Click(object sender, EventArgs e)
         {
-            if (SwitchToRunMode())
-            {
-                errorProvider1.SetError(RunModeButton, string.Empty);
-            }
-            else
-            {
-                errorProvider1.SetError(RunModeButton, "Can't run: Errors exist in your mappings!");    
-            }
+            SwitchToRunMode();          
         }
 
         private void EditModeButton_Click(object sender, EventArgs e)

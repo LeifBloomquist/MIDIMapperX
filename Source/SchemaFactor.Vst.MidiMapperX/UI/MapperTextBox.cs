@@ -58,7 +58,12 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             // This will only allow valid hex values [0-9][a-f][A-F], spaces, n, and v to be entered.
             char c = e.KeyChar;
-            if (c != '\b' && !((c <= 'f' && c >= 'a') || (c <= 'F' && c >= 'A') || (c >= '0' && c <= '9') || (c == ' ') || (c == 'n') || (c == 'v')))
+            int ic = (int)c;
+
+            //MessageBox.Show(this, "Key pressed: " + (int)c);
+
+            // Allowed letters&numbers , copy/paste
+            if (c != '\b' && !((c <= 'f' && c >= 'a') || (c <= 'F' && c >= 'A') || (c >= '0' && c <= '9') || (c == ' ') || (c == 'n') || (c == 'v') || (ic == 22) || (ic == 24)))
             {
                 e.Handled = true;
             }

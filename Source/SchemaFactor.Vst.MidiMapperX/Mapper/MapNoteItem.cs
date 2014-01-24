@@ -108,10 +108,12 @@
             {
                 case Constants.MapTypes.ON:
                     TriggerPulseOn  = 1.0;
+                    TriggerPulseOff = 0.0;
                     break;
 
                 case Constants.MapTypes.OFF:
                     TriggerPulseOff = 1.0;
+                    TriggerPulseOn  = 0.0;
                     break;
 
                 case Constants.MapTypes.CC:

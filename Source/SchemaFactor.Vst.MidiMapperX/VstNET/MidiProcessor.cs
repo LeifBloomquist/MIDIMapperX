@@ -43,6 +43,8 @@
 
             _plugin.callCount++;
 
+            bool thrudone = false;
+
             foreach (VstEvent evnt in inputEvents)
             {
                 _plugin.eventCount++;
@@ -59,6 +61,7 @@
                 if (_plugin.Options.MidiThruAll)
                 {
                     Events.Add(evnt);
+                    thrudone = true;
                 }
 
                 // Don't do any more if we aren't running.
@@ -112,13 +115,16 @@
                         break;
                 }
 
-                // Check that we got a result
+                // Check that we got a result.  If not - no match.
                 if (midiData == null)
                 {
                     if (_plugin.Options.MidiThru)
                     {
-                        // add original event
-                        Events.Add(evnt);
+                        // add original event, if not added already.
+                        if (!thrudone)
+                        {
+                            Events.Add(evnt);
+                        }
                     }
                     continue;
                 }

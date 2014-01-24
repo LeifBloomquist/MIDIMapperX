@@ -32,7 +32,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 midiKeyName.Name = p.NoteMaps[midiKeyName.CurrentKeyNumber].KeyName;
                 return true;
             }
-            catch (Exception e) // Most likely out of range
+            catch (Exception) // Most likely out of range, since FL supports notes > 127
             {
                 midiKeyName.Name = "Unknown " + midiKeyName.CurrentKeyNumber;  // This is actually never seen since we return false below
                 return false;
