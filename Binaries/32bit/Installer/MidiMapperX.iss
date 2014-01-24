@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppID={{503B35CA-D053-4D7D-966C-E0B51E7D4973}
 AppName=MidiMapperX
-AppVersion=1.0.0.4
+AppVersion=2.0.0.0
 AppPublisher=Schema Factor
 AppPublisherURL=http://www.schemafactor.com/midimapperx
 AppSupportURL=http://www.schemafactor.com/midimapperx
@@ -18,9 +18,9 @@ DisableProgramGroupPage=yes
 OutputBaseFilename=setup
 Compression=lzma/Max
 SolidCompression=true
-AppVerName=MidiMapperX 1.0.0.4
+AppVerName=MidiMapperX 2.0.0.0 RC1
 MinVersion=5.1.2600sp1
-WizardImageFile=C:\Users\Leif\Documents\GitHub\MIDIMapperX\Binaries\32bit\Installer\image.bmp
+WizardImageFile=C:\Users\Leif\Documents\GitHub\MIDIMapperX\Binaries\32bit\Installer\image2.bmp
 WizardImageStretch=false
 ShowLanguageDialog=no
 
