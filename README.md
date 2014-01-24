@@ -5,7 +5,7 @@ The ultimate MIDI Mapping &amp; Translation VST plugin.  For FL Studio and other
 
 http://www.schemafactor.com/midimapperx
 
-![Screenshot](https://raw.github.com/LeifBloomquist/MIDIMapperX/master/Screenshots/MidiMapperX.png)
+![Screenshot](https://raw.github.com/LeifBloomquist/MIDIMapperX/master/Screenshots/MidiMapperX2000.png)
 
 *Please Note* Only the 32-bit version is properly working at this time.
 
