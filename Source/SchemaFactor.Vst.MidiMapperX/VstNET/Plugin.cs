@@ -23,6 +23,8 @@
         public ulong hitCount { get; set; }
 
         public bool presetsLoaded { get; set; }  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.
+        public bool olderpresetswarning { get; set; }  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.
+        
 
         public Constants.Modes CurrentMode = Constants.Modes.RUN;
 
@@ -38,14 +40,7 @@
             : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist 2014   Jacobi Software 2012", Constants.VERSION),
                 VstPluginCategory.Synth, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
         {
-            NoteMaps = new MapNoteItem[Constants.MAXNOTES];            
-            
-            for(int note=0; note<NoteMaps.Length; note++) 
-            {
-                NoteMaps[note] = new MapNoteItem();
-                NoteMaps[note].KeyName = "Note Map " + note;
-            }
-
+            ResetMaps();
             Options = new OptionSet();   
         }
 
@@ -57,7 +52,6 @@
         protected override IVstPluginAudioProcessor CreateAudioProcessor(IVstPluginAudioProcessor instance)
         {
             if (instance == null) return new AudioProcessor(this);
-
             return instance;
         }
 
@@ -69,7 +63,6 @@
         protected override IVstPluginEditor CreateEditor(IVstPluginEditor instance)
         {
             if (instance == null) return new PluginEditor(this);
-
             return instance;
         }
 
@@ -81,8 +74,18 @@
         protected override IVstMidiProcessor CreateMidiProcessor(IVstMidiProcessor instance)
         {
             if (instance == null) return new MidiProcessor(this);
-
             return instance;
+        }
+
+        public void ResetMaps()
+        {
+            NoteMaps = new MapNoteItem[Constants.MAXNOTES];
+
+            for (int note = 0; note < NoteMaps.Length; note++)
+            {
+                NoteMaps[note] = new MapNoteItem();
+                NoteMaps[note].KeyName = "Undefined Map " + note;
+            }
         }
 
         /// <summary>

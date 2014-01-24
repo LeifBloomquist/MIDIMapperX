@@ -168,6 +168,11 @@ namespace SchemaFactor.Vst.MidiMapperX
             {
                 FillList();
                 _plugin.presetsLoaded = false;
+
+                if (_plugin.olderpresetswarning)
+                {
+                    MessageBox.Show(this, "This map set was created with an older version of the plugin.\n\nPlease check your maps and options.", "MIDIMapperX", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
 
             // Debug info

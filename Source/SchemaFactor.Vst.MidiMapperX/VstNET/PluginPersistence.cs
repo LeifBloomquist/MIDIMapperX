@@ -74,7 +74,6 @@
             for (int n = 0; n < count; n++)
             {
                 MapNoteItem map = _plugin.NoteMaps[n];
-
                 map.KeyName = reader.ReadString();
                 map.OutputBytesStringOn = reader.ReadString();
                 map.OutputBytesStringOff = reader.ReadString();
@@ -91,6 +90,13 @@
             {
                 // Note: This catch block never seems to be reached, investigate (Low priority)
                 MessageBox.Show("No Options block in preset", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            // CCs
+            for (int n = 0; n < count; n++)
+            {
+                MapNoteItem map = _plugin.NoteMaps[n];
+                map.OutputBytesStringCC = reader.ReadString();
             }
 
             _plugin.presetsLoaded = true;
@@ -125,8 +131,12 @@
             writer.Write(_plugin.Options.MidiThruAll);
             writer.Write(_plugin.Options.AlwaysSysEx);
 
-            // CCs (future)
-
+            // CCs
+            for (int note = 0; note < Constants.MAXNOTES; note++)
+            {
+                MapNoteItem map = _plugin.NoteMaps[note];
+                writer.Write(map.OutputBytesStringCC);
+            }
 
             writer.Close();
         }
@@ -134,9 +144,14 @@
 #endregion
 
 
-        // This has not been tested!
+        // Works!
         private void ReadOldPreset(BinaryReader reader)
         {
+            _plugin.ResetMaps();
+
+            reader.BaseStream.Position = 0;
+            reader.BaseStream.Seek(0, SeekOrigin.Begin);
+
             int count = reader.ReadInt32();
 
             for (int n = 0; n < count; n++)
@@ -144,11 +159,11 @@
                 MapNoteItem item = new MapNoteItem();
 
                 item.KeyName = reader.ReadString();
-                //       item.TriggerNoteNumber = reader.ReadByte();
+                int trigger = reader.ReadByte();
                 item.OutputBytesStringOn = reader.ReadString();
                 item.OutputBytesStringOff = reader.ReadString();
 
-                //            _plugin.NoteMaps.Add(item);
+                _plugin.NoteMaps[trigger] = item;
             }
 
             try  // In case the preset was written with an older version that didn't have all these options yet.
@@ -160,10 +175,10 @@
             catch // all, i.e. (System.IO.EndOfStreamException e)
             {
                 // Note: This catch block never seems to be reached, investigate (Low priority)
-                MessageBox.Show("This map was created with an older version of the plugin.\n\nPlease check your options.");
+                ;
             }
 
-            MessageBox.Show("This map was created with an older version of the plugin.\n\nPlease check your options.");
+            _plugin.olderpresetswarning = true;
             _plugin.presetsLoaded = true;
         }
     }
