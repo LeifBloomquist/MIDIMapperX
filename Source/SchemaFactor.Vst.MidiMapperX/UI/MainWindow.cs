@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SchemaFactor.Vst.MidiMapperX
 {
-    /// GUI Test 
+    /// Main GUI Window
     partial class MainWindow : DoubleBufferedUserControl
     {        
         private Plugin _plugin = null;
@@ -105,7 +105,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             {
                 lastedit = mtb.Text;
 
-                // Recheck the whole thing, and most inportantly parse them into memory.
+                // Recheck the whole thing, and most importantly parse them into memory.
                 // Potentially wasteful!  Especially since each MapperTextBox does its own checking.
                 ParseMaps();                
                 mtb.Changed = false;
@@ -177,6 +177,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 {
                     MessageBox.Show(this, "This map set was created with an older version of the plugin.\n\nPlease check your maps and options.", "MIDIMapperX", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     SwitchToEditMode();
+                    _plugin.olderpresetswarning = false;
                 }
             }
 
@@ -231,7 +232,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         /// <summary>
         /// Check all map boxes for validity, and parse them into the current memory map if so.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>true if valid (or null)</returns>
         private bool ParseMaps()
         {
             if (_plugin == null)  // Special case, only at startup
@@ -259,8 +260,6 @@ namespace SchemaFactor.Vst.MidiMapperX
                 }                
             }
 
-            // !!!! FLAW with this approach: Maps are only saved to memory if Run is pressed!
-
             if (pass)
             {
                 for (int note = 0; note < Constants.MAXNOTES; note++)
@@ -282,6 +281,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         /// <summary>
         /// Switch to Run mode.
         /// </summary>
+        /// <returns>true if successful</returns>
         private bool SwitchToRunMode()
         {
             if (_plugin == null) return true;
@@ -342,7 +342,6 @@ namespace SchemaFactor.Vst.MidiMapperX
             {
                 DebugLabel.Visible = !DebugLabel.Visible;
             }
-
         }
 
         private void RunModeButton_Click(object sender, EventArgs e)

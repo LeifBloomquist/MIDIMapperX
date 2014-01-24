@@ -23,7 +23,7 @@
         public ulong hitCount { get; set; }
 
         public bool presetsLoaded { get; set; }  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.
-        public bool olderpresetswarning { get; set; }  // This is a flag from the PluginPersistence Class to the GUI to notify it when presets were (re)loaded.        
+        public bool olderpresetswarning { get; set; }  // This is a flag from the PluginPersistence Class to the GUI to notify it that old presets were loaded.        
 
         public Constants.Modes CurrentMode = Constants.Modes.RUN;
 

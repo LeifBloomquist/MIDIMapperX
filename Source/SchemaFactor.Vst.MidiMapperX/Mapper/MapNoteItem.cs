@@ -10,8 +10,6 @@
     /// </summary>
     public class MapNoteItem
     {
-      
-
         /// <summary>
         /// Gets or sets a readable name for this mapping item.
         /// </summary>

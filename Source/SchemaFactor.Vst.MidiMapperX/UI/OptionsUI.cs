@@ -34,6 +34,8 @@ namespace SchemaFactor.Vst.MidiMapperX
             toolTip1.IsBalloon = true;
             toolTip1.SetToolTip(ThruCheckbox,    "When checked, all non-mapped note on/off events are passed through normally.");
             toolTip1.SetToolTip(AllThruCheckbox, "When checked, all note on/off events are passed through normally, in addition to the new mappings.");
+            toolTip1.SetToolTip(SysExCheckbox,   "When checked, all output is sent internally though simulated SysEx messages.\n" +
+                                                 "When unchecked, all output is converted into regular 3-byte MIDI messages.");
         }
 
         private void OKBtn_Click(object sender, EventArgs e)

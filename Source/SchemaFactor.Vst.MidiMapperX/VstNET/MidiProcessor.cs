@@ -77,7 +77,7 @@
                 MapNoteItem map = _plugin.NoteMaps[note];
                 byte[] midiData = null;
 
-                // Filter out everything except Note On/Note Off events
+                // Filter out everything except Note On/Note Off and CC events
                 switch (command)
                 {
                     case 0x90: // Note On

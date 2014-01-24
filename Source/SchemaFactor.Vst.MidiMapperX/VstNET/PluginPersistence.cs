@@ -58,7 +58,7 @@
 
             if (version < Constants.VERSION)
             {
-                // Special handling here.
+                // TODO: Special handling here in future.
             }
 
             // Number of maps 
