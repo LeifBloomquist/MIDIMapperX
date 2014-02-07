@@ -32,14 +32,12 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             InitializeComponent();
             InitializeGrid();
-            FillList();
-
-           // typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, MainPanel, new object[] { true });
         }
 
         public void setPlugin(Plugin plugin)
         {
-            _plugin = plugin;            
+            _plugin = plugin;
+            MapperTextBox.plugin = plugin;
             FillList();
             SwitchToRunMode();
         }
@@ -49,6 +47,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             // Sets the timer interval to 50 milliseconds.
             myTimer.Tick += TimerEventProcessor;            
             myTimer.Interval = 50;
+            myTimer.Start();
         }
 
         private void InitializeGrid()
@@ -136,8 +135,7 @@ namespace SchemaFactor.Vst.MidiMapperX
         {
             if (_plugin == null) return;
             if ((!this.Created) || (_plugin.NoteMaps == null)) return;
-
-            if (_plugin.CurrentMode != Constants.Modes.RUN) return;
+            if (_plugin.CurrentMode != Constants.Modes.RUN) return;   // As not to overwrite error conditions (yellow background)
 
             for (int note = 0; note < Constants.MAXNOTES; note++)
             {
@@ -153,8 +151,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 OnMaps[note].BackColor = Color.FromArgb(0, green, 0);
                 OffMaps[note].BackColor = Color.FromArgb(red, 0, 0);
                 CCMaps[note].BackColor = Color.FromArgb(0, 0, blue);
-
-                map.Pulse();
+                map.Pulse(); 
             }
         }
 
@@ -305,7 +302,6 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             RunModeButton.ForeColor = Color.White;
             EditModeButton.ForeColor = Color.Black;
-            myTimer.Start();
 
             errorProvider1.SetError(RunModeButton, string.Empty);
             return true;
@@ -322,7 +318,6 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             RunModeButton.ForeColor = Color.Black;
             EditModeButton.ForeColor = Color.White;
-            myTimer.Stop();
 
             // Set edit boxes editable
             for (int note = 0; note < Constants.MAXNOTES; note++)
@@ -331,6 +326,12 @@ namespace SchemaFactor.Vst.MidiMapperX
                 OnMaps[note].ReadOnly = false;
                 OffMaps[note].ReadOnly = false;
                 CCMaps[note].ReadOnly = false;
+
+                MapNums[note].BackColor = Color.Black;
+                MapNames[note].BackColor = Color.Black;
+                OnMaps[note].BackColor = Color.Black;
+                OffMaps[note].BackColor = Color.Black;
+                CCMaps[note].BackColor = Color.Black;
 
                 _plugin.NoteMaps[note].ClearPulse();
             }

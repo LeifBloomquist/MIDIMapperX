@@ -15,6 +15,12 @@ namespace SchemaFactor.Vst.MidiMapperX
     public class MapperTextBox : TextBox
     {
         private KeysConverter kc = new KeysConverter();
+        String originaltext = "";
+
+        /// <summary>
+        /// Plugin static reference shared by all instances
+        /// </summary>
+        public static Plugin plugin { get; set; }
 
         /// <summary>
         /// Flag to indicate no checking is to be done on this instance (i.e. for names)
@@ -27,10 +33,18 @@ namespace SchemaFactor.Vst.MidiMapperX
         public bool Changed { get; set; }
 
         /// <summary>
-        /// The dedault font.
+        /// The default font.
         /// </summary>
         public static Font OCRFont = new Font("OCR A Extended", 10f);
 
+        /// <summary>
+        /// Constructor for derived textbox that looks cool and has validation features for MIDI Mapper X.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="tooltip">Tooltip text to display</param>
         public MapperTextBox(int x, int y, int width, int height, String tooltip)
         {            
             this.Location = new System.Drawing.Point(x, y);
@@ -57,6 +71,15 @@ namespace SchemaFactor.Vst.MidiMapperX
             Changed = false;
         }
    
+        /// <summary>
+        /// A variant constructor that is read-only (used for labels)
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="tooltip"></param>
+        /// <param name="ro"></param>
         public MapperTextBox(int x, int y, int width, int height,  String tooltip, bool ro) : this(x, y+2, width, height, tooltip)
         {
             this.ReadOnly = ro;
@@ -64,15 +87,12 @@ namespace SchemaFactor.Vst.MidiMapperX
             this.TextAlign = HorizontalAlignment.Right;         
         }
 
-
-
-        //KeyPressEventArgs kpea = new KeyPressEventArgs(c);
-        //kpea.Handled = false;
-        //this.OnKeyPress(kpea);
-
-
         private void MapperTextBox_KeyUp(object sender, KeyEventArgs e)
         {
+            if (plugin == null) return;
+            if (plugin.CurrentMode != Constants.Modes.EDIT) return;
+            if (this.ReadOnly) return;
+
             this.BackColor = Color.FromArgb(25, 25, 25);
             this.ForeColor = Color.White;           
             
@@ -82,9 +102,9 @@ namespace SchemaFactor.Vst.MidiMapperX
             // Special cases
             switch (e.KeyCode)
             {
-                case Keys.Back:    // Backspace
+                case Keys.Back:
                 {
-                    if (Text.Length > 0)
+                    if (SelectionStart > 0)
                     {
                         int savedIndex = this.SelectionStart;
                         Text = Text.Remove(savedIndex - 1, 1);
@@ -96,9 +116,52 @@ namespace SchemaFactor.Vst.MidiMapperX
 
                 case Keys.Delete:    
                 {
+                    if (SelectionLength == 0)
+                    {
+                        SelectionLength = 1;
+                    }
                     int savedIndex = this.SelectionStart;
                     Text = Text.Remove(SelectionStart, SelectionLength);
                     SelectionStart = savedIndex;
+                    return;
+                }
+
+                case Keys.Home:
+                {
+                    SelectionStart = 0;
+                    return;
+                }
+
+                case Keys.Left:
+                {
+                    if (SelectionStart > 0)
+                    {
+                        SelectionStart--;
+                    }
+                    return;
+                }
+
+                case Keys.Right:
+                {
+                    SelectionStart++;
+                    return;
+                }
+
+                case Keys.End:
+                {
+                    SelectionStart = TextLength+1;
+                    return;
+                }
+
+                case Keys.Escape:
+                {
+                    Text = originaltext;
+                    return;
+                }
+
+                case Keys.Enter:
+                {
+                    CheckValid();
                     return;
                 }
 
@@ -111,8 +174,28 @@ namespace SchemaFactor.Vst.MidiMapperX
                 default:
                 {
                     keyChar = kc.ConvertToString(e.KeyData);
+                    keyChar.Replace("Shift+", "");  // Ignore shift
                     break;
                 }
+            }
+
+            // Cut, copy and paste!
+            if (keyChar == "Ctrl+X")  // Literally, that's what it will be!
+            {
+                this.Cut();
+                return;
+            }
+
+            if (keyChar == "Ctrl+C")  
+            {
+                this.Copy();
+                return;
+            }
+
+            if (keyChar == "Ctrl+V")
+            {
+                this.Paste();
+                return;
             }
 
             // Special case: Instances where everything goes (i.e. map names)
@@ -135,23 +218,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 return;
             }
 
-
-            MessageBox.Show(this, "Unhandled key: " + keyChar);
-          
-            
-
-            /*
-
-                        // This will only allow valid hex values [0-9][a-f][A-F], spaces, n, and v to be entered. (and copy/paste)
-                        int ic = (int)c;
-
-                        // Allowed letters&numbers , copy/paste
-                        if (c != '\b' && !((c <= 'f' && c >= 'a') || (c <= 'F' && c >= 'A') || (c >= '0' && c <= '9') || (c == ' ') || (c == 'n') || (c == 'v') || (ic == 22) || (ic == 24)))
-                        {
-                            e.Handled = true;
-                        }
- 
-             */
+            // MessageBox.Show(this, "Unhandled key: " + keyChar);
         }
 
 
@@ -160,15 +227,12 @@ namespace SchemaFactor.Vst.MidiMapperX
             this.BackColor = Color.FromArgb(15, 15, 15);
             this.ForeColor = Color.White;
             Changed = false;
+            originaltext = Text;
         }
 
         private void MapperTextBox_LostFocus(object sender, EventArgs e)
         {
-            if (this.CheckValid())
-            {
-                this.BackColor = Color.Black;
-                this.ForeColor = Color.White;
-            }            
+            CheckValid();            
         }
 
         /// <summary>
@@ -186,6 +250,9 @@ namespace SchemaFactor.Vst.MidiMapperX
             try
             {
                 MapNoteItem.StringToBytes(this.Text, 15, 255);
+
+                this.BackColor = Color.Black;
+                this.ForeColor = Color.White;
             }
             catch // All, assume parsing errors
             {
