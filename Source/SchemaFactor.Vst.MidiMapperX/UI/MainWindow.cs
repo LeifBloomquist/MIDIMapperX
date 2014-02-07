@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace SchemaFactor.Vst.MidiMapperX
 {
     /// Main GUI Window
-    partial class MainWindow : DoubleBufferedUserControl
+    partial class MainWindow : UserControl  //  DoubleBufferedUserControl
     {        
         private Plugin _plugin = null;
 
@@ -34,7 +34,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             InitializeGrid();
             FillList();
 
-            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, MainPanel, new object[] { true });
+           // typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, MainPanel, new object[] { true });
         }
 
         public void setPlugin(Plugin plugin)
@@ -205,7 +205,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             MessageBox.Show(this, 
                     _plugin.ProductInfo.Vendor + "\n\n" +
                     _plugin.ProductInfo.Product + "   " +
-                    "Version: " + _plugin.ProductInfo.FormattedVersion + " RC 1",
+                    "Version: " + _plugin.ProductInfo.FormattedVersion + " RC2",
                     "Schema Factor MIDIMapperX",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);

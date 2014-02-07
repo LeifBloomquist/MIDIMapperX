@@ -4,6 +4,7 @@
     using Jacobi.Vst.Core;
     using Jacobi.Vst.Framework;
     using Jacobi.Vst.Framework.Common;
+    using System.Windows.Forms;
 
     /// <summary>
     /// Implements the custom UI editor for the plugin.
@@ -11,7 +12,6 @@
     class PluginEditor : IVstPluginEditor
     {
         private Plugin _plugin;
-        //private WinFormsControlWrapper<MidiNoteMapperUI> _uiWrapper = new WinFormsControlWrapper<MidiNoteMapperUI>();      
         private WinFormsControlWrapper<MainWindow> _uiWrapper = new WinFormsControlWrapper<MainWindow>();              
 
         /// <summary>
@@ -39,11 +39,13 @@
         public void KeyDown(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
         {
             // no-op
+            MessageBox.Show("Key Down: " + ascii);
         }
 
         public void KeyUp(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
         {
             // no-op
+            //MessageBox.Show("Key Up: " + ascii);
         }
 
         public VstKnobMode KnobMode { get; set; }

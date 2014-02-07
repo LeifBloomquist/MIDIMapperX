@@ -1,4 +1,6 @@
-﻿namespace SchemaFactor.Vst.MidiMapperX
+﻿#pragma warning disable 1591
+
+namespace SchemaFactor.Vst.MidiMapperX
 {
     using System.Collections.ObjectModel;
     using System.Windows.Forms;
@@ -181,3 +183,5 @@
         }      
     }
 }
+
+#pragma warning restore 1591

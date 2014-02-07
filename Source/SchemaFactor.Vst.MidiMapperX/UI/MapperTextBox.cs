@@ -25,7 +25,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             this.BackColor = Color.Black;
             this.ForeColor = Color.White;
             this.BorderStyle = BorderStyle.FixedSingle;
-            this.WordWrap = false;            
+            this.WordWrap = false;
     
             // Events
             this.KeyPress += MapperTextBox_KeyPress;

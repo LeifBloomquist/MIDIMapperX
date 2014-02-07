@@ -1,10 +1,14 @@
-﻿namespace SchemaFactor.Vst.MidiMapperX
+﻿using Jacobi.Vst.Core;
+using Jacobi.Vst.Framework;
+using Jacobi.Vst.Framework.Common;
+using Jacobi.Vst.Framework.Plugin;
+using System;
+
+#pragma warning disable 1591
+
+namespace SchemaFactor.Vst.MidiMapperX
 {
-    using Jacobi.Vst.Core;
-    using Jacobi.Vst.Framework;
-    using Jacobi.Vst.Framework.Common;
-    using Jacobi.Vst.Framework.Plugin;
-    using System;
+
 
     /// <summary>
     /// The Plugin root class that implements the interface manager and the plugin midi source.
@@ -37,7 +41,7 @@
         /// </summary>
         public Plugin()
             : base("MIDIMapperX", new VstProductInfo("MIDIMapperX", "Leif Bloomquist (2014)   Jacobi Software (2012)", Constants.VERSION),
-                VstPluginCategory.Synth, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
+                VstPluginCategory.Generator, VstPluginCapabilities.NoSoundInStop, 0, 0x323)
         {
             ResetMaps();
             Options = new OptionSet();   
@@ -138,3 +142,5 @@
               
     }
 }
+
+#pragma warning restore 1591
