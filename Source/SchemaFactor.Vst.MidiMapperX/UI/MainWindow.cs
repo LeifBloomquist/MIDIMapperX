@@ -62,43 +62,43 @@ namespace SchemaFactor.Vst.MidiMapperX
                 int Yloc = 2 + note * YSpacing;
 
                 // Note Number                
-                MapperTextBox tb = new MapperTextBox(NoteNumber.Location.X - XNudge - 10, Yloc, NoteNumber.Size.Width, YSize, "Note # that triggers this map.", true);                                
-                tb.Text = note.ToString("000");
-                MapNums[note] = tb;
-                MainPanel.Controls.Add(tb);
+                MapperTextBox mtb = new MapperTextBox(NoteNumber.Location.X - XNudge - 10, Yloc, NoteNumber.Size.Width, YSize, "Note # that triggers this map.", true);                                
+                mtb.Text = note.ToString("000");
+                MapNums[note] = mtb;
+                MainPanel.Controls.Add(mtb);
 
                 // Map Name
-                tb = new MapperTextBox(MapName.Location.X - XNudge, Yloc, MapName.Size.Width, YSize, "Enter a name for this mapping.");
-                tb.Text = "Undefined " + note;                
-                MapNames[note] = tb;
-                tb.nocheck = true;
-                tb.LostFocus += TextBoxEdited;
-                MainPanel.Controls.Add(tb);
+                mtb = new MapperTextBox(MapName.Location.X - XNudge, Yloc, MapName.Size.Width, YSize, "Enter a name for this mapping.");
+                mtb.Text = "Undefined " + note;                
+                MapNames[note] = mtb;
+                mtb.nocheck = true;
+                mtb.LostFocus += TextBoxExited;
+                MainPanel.Controls.Add(mtb);
         
                 // Note On
-                tb = new MapperTextBox(MIDIDataOn.Location.X - XNudge, Yloc, MIDIDataOn.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note On events.");
-                tb.CharacterCasing = CharacterCasing.Upper;
-                OnMaps[note] = tb;
-                tb.LostFocus += TextBoxEdited;
-                MainPanel.Controls.Add(tb);
+                mtb = new MapperTextBox(MIDIDataOn.Location.X - XNudge, Yloc, MIDIDataOn.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note On events.");
+                mtb.CharacterCasing = CharacterCasing.Upper;
+                OnMaps[note] = mtb;
+                mtb.LostFocus += TextBoxExited;
+                MainPanel.Controls.Add(mtb);
 
                 // Note Off
-                tb = new MapperTextBox(MIDIDataOff.Location.X - XNudge, Yloc, MIDIDataOff.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note Off events.");
-                tb.CharacterCasing = CharacterCasing.Upper;
-                OffMaps[note] = tb;
-                tb.LostFocus += TextBoxEdited;
-                MainPanel.Controls.Add(tb);
+                mtb = new MapperTextBox(MIDIDataOff.Location.X - XNudge, Yloc, MIDIDataOff.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Velocity from original note.\nLeave blank to ignore Note Off events.");
+                mtb.CharacterCasing = CharacterCasing.Upper;
+                OffMaps[note] = mtb;
+                mtb.LostFocus += TextBoxExited;
+                MainPanel.Controls.Add(mtb);
 
                 // New!  CCs
-                tb = new MapperTextBox(MIDIDataCC.Location.X - XNudge, Yloc, MIDIDataCC.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Value from original CC.\nLeave blank to ignore CC events.");
-                tb.CharacterCasing = CharacterCasing.Upper;
-                CCMaps[note] = tb;
-                tb.LostFocus += TextBoxEdited;
-                MainPanel.Controls.Add(tb);
+                mtb = new MapperTextBox(MIDIDataCC.Location.X - XNudge, Yloc, MIDIDataCC.Size.Width, YSize, "Enter bytes to send in hexadecimal in the form ## ## ##...\nUse N for Channel and VV for Value from original CC.\nLeave blank to ignore CC events.");
+                mtb.CharacterCasing = CharacterCasing.Upper;
+                CCMaps[note] = mtb;    
+                mtb.LostFocus += TextBoxExited;
+                MainPanel.Controls.Add(mtb);
             }
         }
 
-        private void TextBoxEdited(object sender, EventArgs e)
+        private void TextBoxExited(object sender, EventArgs e)
         {
             MapperTextBox mtb = (MapperTextBox)sender;
             if (mtb.Changed)

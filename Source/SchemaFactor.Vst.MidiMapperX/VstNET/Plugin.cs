@@ -31,6 +31,8 @@ namespace SchemaFactor.Vst.MidiMapperX
 
         public Constants.Modes CurrentMode = Constants.Modes.RUN;
 
+     //   public MapperTextBox CurrentTextBox { get; set; }
+
         /// <summary>
         /// Gets or sets the options set.
         /// </summary>

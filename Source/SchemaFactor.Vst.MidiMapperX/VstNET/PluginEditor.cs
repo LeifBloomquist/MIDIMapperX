@@ -39,13 +39,13 @@
         public void KeyDown(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
         {
             // no-op
-            MessageBox.Show("Key Down: " + ascii);
+            //MessageBox.Show("KeyDown, ascii=" + ascii);
         }
 
         public void KeyUp(byte ascii, VstVirtualKey virtualKey, VstModifierKeys modifers)
         {
             // no-op
-            //MessageBox.Show("Key Up: " + ascii);
+            // This rarely gets called in FL - not reliable
         }
 
         public VstKnobMode KnobMode { get; set; }
