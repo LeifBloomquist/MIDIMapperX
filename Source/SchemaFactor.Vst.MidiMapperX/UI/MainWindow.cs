@@ -199,13 +199,11 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             AboutButton.ForeColor = Color.White;
 
-            MessageBox.Show(this, 
-                    _plugin.ProductInfo.Vendor + "\n\n" +
-                    _plugin.ProductInfo.Product + "   " +
-                    "Version: " + _plugin.ProductInfo.FormattedVersion + " RC2",
-                    "Schema Factor MIDIMapperX",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+            AboutForm about = new AboutForm(_plugin.ProductInfo.Vendor + "\n\n" +
+                                            _plugin.ProductInfo.Product + "   " +
+                              "Version: " + _plugin.ProductInfo.FormattedVersion + " RC2");
+
+            about.ShowDialog(this);
 
             AboutButton.ForeColor = Color.Black;
         }

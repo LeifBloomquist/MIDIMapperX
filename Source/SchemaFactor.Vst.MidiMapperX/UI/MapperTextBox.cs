@@ -264,7 +264,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             // Instances where (nearly) everything goes (i.e. map names)
             if (nocheck) 
             {
-                if ("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+[]:;.!@#$%^&*()_=/| ".Contains(keyChar))
+                if ("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+[]:;.!@#$%^&*()_=/?| ".Contains(keyChar))
                 {
                     Changed = true;              
 
@@ -305,7 +305,7 @@ namespace SchemaFactor.Vst.MidiMapperX
                 return;
             }
 
-            MessageBox.Show(this, "Unhandled key: " + keyChar);
+            // MessageBox.Show(this, "Unhandled key: " + keyChar);
         }
 
 

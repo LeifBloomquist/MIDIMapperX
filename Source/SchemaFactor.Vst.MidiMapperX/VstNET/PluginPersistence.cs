@@ -48,7 +48,6 @@
 
             if (!headerok)  // Version 1?
             {
-                // TODO, use old reader code
                 ReadOldPreset(reader);
                 return;
             }
@@ -142,7 +141,6 @@
         }
 
 #endregion
-
 
         // Works!
         private void ReadOldPreset(BinaryReader reader)
