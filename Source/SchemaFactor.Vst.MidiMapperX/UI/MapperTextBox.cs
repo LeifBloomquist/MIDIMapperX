@@ -57,7 +57,7 @@ namespace SchemaFactor.Vst.MidiMapperX
             this.WordWrap = false;
     
             // Events
-            //this.KeyPress += MapperTextBox_KeyPress;  // This never gets called in FL except in Bridged mode.  So, using KeyUp instead.
+            this.KeyPress += MapperTextBox_KeyPress;  // This never gets called in FL except in Bridged mode. 
             this.KeyUp += MapperTextBox_KeyUp;
             this.GotFocus += MapperTextBox_GotFocus;
             this.LostFocus += MapperTextBox_LostFocus;
@@ -70,7 +70,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             Changed = false;
         }
-   
+
         /// <summary>
         /// A variant constructor that is read-only (used for labels)
         /// </summary>
@@ -86,6 +86,12 @@ namespace SchemaFactor.Vst.MidiMapperX
             this.BorderStyle = BorderStyle.None;
             this.TextAlign = HorizontalAlignment.Right;         
         }
+
+        // This suppresses the keypress event when in FL Bridged Mode, to avoid double characters.
+        private void MapperTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }  
 
         private void MapperTextBox_KeyUp(object sender, KeyEventArgs e)
         {
@@ -171,10 +177,49 @@ namespace SchemaFactor.Vst.MidiMapperX
                     break;
                 }
 
+                case Keys.Oemcomma:
+                {
+                    keyChar = ",";
+                    break;
+                }
+
+                case Keys.OemMinus:
+                case Keys.Subtract:
+                {
+                    keyChar = "-";
+                    break;
+                }
+
+                case Keys.OemPeriod:
+                {
+                    keyChar = ".";
+                    break;
+                }
+
+                case Keys.Divide:
+                {
+                    keyChar = "/";
+                    break;
+                }
+
+                case Keys.OemQuestion:
+                {
+                    if (e.Modifiers == Keys.Shift)
+                    {
+                        keyChar = "?";
+                    }
+                    else
+                    {
+                        keyChar = "/";
+                    }
+                    
+                    break;
+                }
+
                 default:
                 {
                     keyChar = kc.ConvertToString(e.KeyData);
-                    keyChar.Replace("Shift+", "");  // Ignore shift
+                    keyChar = keyChar.Replace("Shift+", "");  // Ignore shift, handle manually below
                     break;
                 }
             }
@@ -198,27 +243,69 @@ namespace SchemaFactor.Vst.MidiMapperX
                 return;
             }
 
-            // Special case: Instances where everything goes (i.e. map names)
+            // Special handing for shifted number keys
+            if ((e.Modifiers == Keys.Shift) && ("0123456789".Contains(keyChar)))
+            {
+                switch (keyChar)
+                {
+                    case "1": keyChar = "!"; break;
+                    case "2": keyChar = "@"; break;
+                    case "3": keyChar = "#"; break;
+                    case "4": keyChar = "$"; break;
+                    case "5": keyChar = "%"; break;
+                    case "6": keyChar = "^"; break;
+                    case "7": keyChar = "&"; break;
+                    case "8": keyChar = "*"; break;
+                    case "9": keyChar = "("; break;
+                    case "0": keyChar = ")"; break;
+                }
+            }
+
+            // Instances where (nearly) everything goes (i.e. map names)
             if (nocheck) 
             {
-                Changed = true;
+                if ("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-+[]:;.!@#$%^&*()_=/| ".Contains(keyChar))
+                {
+                    Changed = true;              
+
+                    if (e.Modifiers == Keys.Shift)
+                    {
+                        keyChar = keyChar.ToUpper();
+                    }
+                    else
+                    {
+                        keyChar = keyChar.ToLower();
+                    }
+                }
             }
-             
-            // Clever hack from Gerard on Stack Overflow
-            if ("0123456789abcdefABCDEFnvNV ".Contains(keyChar)) 
+            else if ("0123456789abcdefABCDEFnvNV ".Contains(keyChar))  // Clever hack from Gerard on Stack Overflow
             {
                 Changed = true;
             }
            
             if (Changed)
             {
-                int savedIndex = this.SelectionStart;
-                Text = Text.Insert(SelectionStart, keyChar);
-                SelectionStart = savedIndex + keyChar.Length;                
+                int savedIndex = SelectionStart;
+
+                if (SelectionLength > 0)
+                {
+                    Text = Text.Remove(SelectionStart, SelectionLength);
+                }
+
+                Text = Text.Insert(savedIndex, keyChar);
+                SelectionStart = savedIndex + keyChar.Length;
+
+                // Helper: insert spaces automatically every two characters at end, for hex byte entry only
+                if ( (!nocheck) && (SelectionStart == TextLength) && ( ((Text.Length+1) % 3) == 0) )
+                {
+                    Text = Text + " ";
+                    SelectionStart = Text.Length;
+                }
+
                 return;
             }
 
-            // MessageBox.Show(this, "Unhandled key: " + keyChar);
+            MessageBox.Show(this, "Unhandled key: " + keyChar);
         }
 
 
