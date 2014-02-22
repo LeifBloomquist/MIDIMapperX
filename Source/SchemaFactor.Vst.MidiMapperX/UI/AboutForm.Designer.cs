@@ -78,7 +78,7 @@
             this.DonateLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.DonateLogo.Image = ((System.Drawing.Image)(resources.GetObject("DonateLogo.Image")));
             this.DonateLogo.InitialImage = ((System.Drawing.Image)(resources.GetObject("DonateLogo.InitialImage")));
-            this.DonateLogo.Location = new System.Drawing.Point(241, 164);
+            this.DonateLogo.Location = new System.Drawing.Point(239, 164);
             this.DonateLogo.Name = "DonateLogo";
             this.DonateLogo.Size = new System.Drawing.Size(99, 40);
             this.DonateLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;

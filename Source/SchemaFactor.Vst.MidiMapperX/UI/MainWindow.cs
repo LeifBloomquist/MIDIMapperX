@@ -201,7 +201,7 @@ namespace SchemaFactor.Vst.MidiMapperX
 
             AboutForm about = new AboutForm(_plugin.ProductInfo.Vendor + "\n\n" +
                                             _plugin.ProductInfo.Product + "   " +
-                              "Version: " + _plugin.ProductInfo.FormattedVersion + " RC2");
+                              "Version: " + _plugin.ProductInfo.FormattedVersion + "");
 
             about.ShowDialog(this);
 
