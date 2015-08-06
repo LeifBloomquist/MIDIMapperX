@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{124C63E4-FE20-4EF1-90C2-0EA078BD716D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SchemaFactor.Vst.MidiMapperX</RootNamespace>
+    <AssemblyName>SchemaFactor.Vst.MidiMapperX</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Jacobi.Vst.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Binaries\64bit\Jacobi.Vst.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Jacobi.Vst.Framework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fa678e13c1efc859, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Binaries\64bit\Jacobi.Vst.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\Common\Constants.cs">
+      <Link>Common\Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\Mapper\MapNoteItem.cs">
+      <Link>Mapper\MapNoteItem.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\Mapper\OptionSet.cs">
+      <Link>Mapper\OptionSet.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\AboutForm.cs">
+      <Link>UI\AboutForm.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\AboutForm.Designer.cs">
+      <Link>UI\AboutForm.Designer.cs</Link>
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\DoubleBufferedUserControl.cs">
+      <Link>UI\DoubleBufferedUserControl.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\MainWindow.cs">
+      <Link>UI\MainWindow.cs</Link>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\MainWindow.Designer.cs">
+      <Link>UI\MainWindow.Designer.cs</Link>
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\MapperTextBox.cs">
+      <Link>UI\MapperTextBox.cs</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\OptionsUI.cs">
+      <Link>UI\OptionsUI.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\UI\OptionsUI.Designer.cs">
+      <Link>UI\OptionsUI.Designer.cs</Link>
+      <DependentUpon>OptionsUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\VstNET\AudioProcessor.cs">
+      <Link>VstNET\AudioProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\VstNET\MidiProcessor.cs">
+      <Link>VstNET\MidiProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\VstNET\Plugin.cs">
+      <Link>VstNET\Plugin.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\VstNET\PluginCommandStub.cs">
+      <Link>VstNET\PluginCommandStub.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\VstNET\PluginEditor.cs">
+      <Link>VstNET\PluginEditor.cs</Link>
+    </Compile>
+    <Compile Include="..\SchemaFactor.Vst.MidiMapperX\VstNET\PluginPersistence.cs">
+      <Link>VstNET\PluginPersistence.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\SchemaFactor.Vst.MidiMapperX\UI\AboutForm.resx">
+      <Link>UI\AboutForm.resx</Link>
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SchemaFactor.Vst.MidiMapperX\UI\MainWindow.resx">
+      <Link>UI\MainWindow.resx</Link>
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\SchemaFactor.Vst.MidiMapperX\UI\OptionsUI.resx">
+      <Link>UI\OptionsUI.resx</Link>
+      <DependentUpon>OptionsUI.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "C:\Program Files\Common Files\VST2\MidiMapperX\MidiMapperX.net.vstdll"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
