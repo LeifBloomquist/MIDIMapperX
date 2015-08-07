@@ -3,13 +3,11 @@ MIDIMapperX
 
 The ultimate MIDI Mapping &amp; Translation VST plugin.  For FL Studio and other Windows DAW users.
 
+Now includes a 32-bit and 64-bit version.
+
 http://www.schemafactor.com/midimapperx
 
-![Screenshot](https://raw.github.com/LeifBloomquist/MIDIMapperX/master/Screenshots/MidiMapperX2000.png)
-
-*Please Note* Only the 32-bit version is properly working at this time.
-
-If you get .NET permission errors, you may have to put the file FL.exe.config (under Support/) in the same folder as FL.exe for it to work.  May be optional.
+![Screenshot](https://raw.github.com/LeifBloomquist/MIDIMapperX/master/Screenshots/MidiMapperX_V2_FL12.png)
 
 
 Credits
